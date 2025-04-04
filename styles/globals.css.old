@@ -1,0 +1,89 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Import squid styles */
+@import '../styles/squid.css';
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@font-face {
+  font-family: 'Popcat';
+  src: url('/fonts/Popcat.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CreamBeige';
+  src: url('/fonts/Cream Beige.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+/* :root,
+[data-theme] {
+  background: oklch(var(--b2));
+  --header-height: 0px;
+} */
+
+body {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+p {
+  margin: 1rem 0;
+}
+
+.btn {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+}
+
+.btn.btn-ghost {
+  box-shadow: none; /* shadow-none */
+}
+
+.navbar {
+  padding: 2rem;
+}
+
+/* Add these styles to your existing CSS */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Default scroll margin if JS doesn't set it dynamically */
+section[id] {
+  scroll-margin-top: 100px;
+}
+
+/* Mobile menu adjustments */
+@media (max-width: 768px) {
+  section[id] {
+    scroll-margin-top: 120px; /* Extra margin for mobile */
+  }
+}
+

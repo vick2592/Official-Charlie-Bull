@@ -1,0 +1,35 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "words": [
+        "autoprefixer",
+        "Axelar",
+        "CHAR",
+        "creambeige",
+        "daisyui",
+        "degen",
+        "HODL",
+        "Isig",
+        "Lambo",
+        "Linea",
+        "mydark",
+        "popcat",
+        "sawer",
+        "squid",
+        "tailwindcss",
+        "tokenomics",
+        "Tokenomics",
+        "UWTFJG",
+        "VARIABLENAME",
+        "Vercel",
+        "Vickz",
+        "Viem",
+        "Wagmi",
+        "Xjns",
+        "xsquid"
+    ],
+    "ignorePaths": [
+        "node_modules/**",
+        ".next/**"
+    ]
+}
