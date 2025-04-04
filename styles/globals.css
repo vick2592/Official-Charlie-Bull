@@ -5,7 +5,12 @@
 /* Import squid styles */
 @import '../styles/squid.css';
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  min-height: 100vh;
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
@@ -17,7 +22,20 @@ body {
   }
 }
 
-/* Add to your globals.css */
+/* Button enhancements */
+.btn {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn.btn-ghost {
+  box-shadow: none;
+}
+
+/* Scroll adjustments for fixed header */
+section[id] {
+  scroll-margin-top: 100px;
+}
+
 @media (max-width: 768px) {
   html {
     scroll-padding-top: var(--header-height, 80px);

@@ -53,9 +53,9 @@ export function LandingPage() {
           <h1 className="text-center rounded-lg">
             <span className="font-creambeige font-bold leading-tight text-5xl">$CHAR</span>
           </h1>
-          <div className="mx-5 md:mx-20 p-3 text-center">
+          <div className="mx-3 md:mx-20 p-3 text-center">
             <div className="text-4xl text-center m-1">Welcome to Charlie Bull,</div>
-            <div className="text-4xl text-center font-bold">The first Cross-Chain AI pup on Ethereum!</div>
+            <div className="text-4xl text-center font-bold">The first Cross-Chain pup on Ethereum!</div>
           </div>
         </div>
 
@@ -141,6 +141,14 @@ export function LandingPage() {
           </div>
         </div>
       </section>
+
+            {/* <hr className="border-t-2 border-secondary w-full" />
+
+      <section id="ai-integration" ref={aiRef} className="pt-20 lg:pt-10">
+        <div className="px-5">
+          <div className="text-4xl text-center font-bold">Charlie X AI16Z</div>
+        </div>
+      </section> */}
 
       <hr className="border-t-2 border-secondary w-full mt-8" />
 
