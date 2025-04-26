@@ -59,7 +59,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        <div className="flex justify-center px-5 mb-8">
+        <div className="flex justify-center px-5 mb-4">
           <Image
             src="/PantingCharlie2.gif"
             alt="Charlie Panting"
@@ -69,45 +69,61 @@ export function LandingPage() {
             unoptimized
           />
         </div>
-
-        <div className="flex justify-center items-center" ref={logoContainerRef}>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/ETHLogo.png" alt="Ethereum Logo" width={75} height={75} className="rounded-lg opacity-60" />
+        
+        <div className="flex flex-col items-center mt-4 mb-8 animate-bounce">
+          <p className="text-lg font-bold mb-2">Available on 9 chains and counting!</p>
+          <a 
+            href="#buy-it-now" 
+            onClick={(e) => {
+              e.preventDefault();
+              
+              // Reuse the same logic from Header component
+              const id = "buy-it-now";
+              const element = document.getElementById(id);
+              
+              if (!element) return;
+              
+              // Find the header and get its height
+              const header = document.querySelector('.header');
+              const headerHeight = header ? header.getBoundingClientRect().height : 0;
+              
+              // Calculate position
+              const rect = element.getBoundingClientRect();
+              const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+              
+              // Find the nearest hr element (border) if it exists
+              const prevHr = element.previousElementSibling;
+              
+              // If there's an hr element before this section, scroll to it instead
+              if (prevHr && prevHr.tagName.toLowerCase() === 'hr') {
+                const hrRect = prevHr.getBoundingClientRect();
+                const hrPosition = hrRect.top + scrollTop;
+                
+                window.scrollTo({
+                  top: hrPosition - headerHeight,
+                  behavior: 'smooth'
+                });
+              } else {
+                const elementTop = rect.top + scrollTop;
+                
+                window.scrollTo({
+                  top: elementTop - headerHeight,
+                  behavior: 'smooth'
+                });
+              }
+              
+              // Update URL
+              window.history.pushState(null, '', `#${id}`);
+            }}
+            className="btn btn-primary btn-md"
+          >
+            Get $CHAR
           </a>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/AvaxLogo.png" alt="Avalanche Logo" width={75} height={75} className="rounded-lg opacity-60" />
-          </a>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/ArbLogo.png" alt="Arbitrum Logo" width={75} height={75} className="rounded-lg opacity-60" />
-          </a>
-        </div>
-        <div className="flex justify-center items-center mt-7" ref={logoContainerRef}>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/MantleLogo.png" alt="Mantle Logo" width={75} height={75} className="rounded-lg opacity-60" />
-          </a>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/BaseLogo.png" alt="Base Logo" width={75} height={75} className="rounded-lg mx-5 opacity-60" />
-          </a>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/LineaLogo.png" alt="Linea Logo" width={75} height={75} className="rounded-lg opacity-60" />
-          </a>
-        </div>
-        <div className="flex justify-center items-center mt-7 mb-16" ref={logoContainerRef}>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/BlastLogo.png" alt="Blast Logo" width={75} height={75} className="rounded-lg opacity-60" />
-          </a>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image src="/PolLogo.png" alt="Polygon Logo" width={75} height={75} className="rounded-lg opacity-75" />
-          </a>
-          <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-            <Image
-              src="/BNBLogo.png"
-              alt="Binance Chain Logo"
-              width={75} 
-              height={75}
-              className="rounded-lg opacity-75"
-            />
-          </a>
+          <div className="flex justify-center mt-6">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
         </div>
       </section>
 
@@ -120,7 +136,7 @@ export function LandingPage() {
           <div className="flex justify-center items-center mt-4">
             <div className="flex flex-col justify-center items-center text-center">
               <p className="text-xl font-semibold mb-3">Charlie Bull Token address:</p>
-              <TokenAddress address="0x5FbDB2315678afecb367f032d93F642f64180aa3" />
+              <TokenAddress address="0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" />
               {/* <p className="text-sm text-base-content/70 mt-2">(Click to copy)</p> */}
             </div>
           </div>
@@ -131,11 +147,11 @@ export function LandingPage() {
           </div>
           <div className="flex justify-center items-center py-7" ref={logoContainerRef}>
             <div className="text-3xl text-gray-600 dark:text-gray-300">Powered by</div>
-            <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+            <a href="https://interchain.axelar.dev/arbitrum/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
               <Image src="/AxelarLogo.png" alt="Axelar Logo" width={75} height={75} className="rounded-lg opacity-85" />
             </a>
             <div className="text-3xl text-gray-600 dark:text-gray-300"> & </div>
-            <a href="https://google.com" className="mx-5" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.squidrouter.com/" className="mx-5" target="_blank" rel="noopener noreferrer">
               <Image src="/SquidLogo.png" alt="Squid Logo" width={75} height={75} className="rounded-lg opacity-85" />
             </a>
           </div>
@@ -180,20 +196,105 @@ export function LandingPage() {
       
       <section id="roadmap" ref={roadmapRef} className="pt-16 lg:pt-8">
         <div className="w-full px-5">
-          <div className="text-4xl text-center pb-4 font-bold">Journey 2025</div>
-          <div className="text-4xl text-center p-4 italic">Q1: Buy and HODL</div>
-          <div className="text-4xl text-center p-4 italic">Q2: Help Charlie grow LPs on Ethereum</div>
-          <div className="flex justify-center items-center gap-12 flex-col sm:flex-row mt-2">
-            <div className="flex flex-col items-center">
-              <Image
-                src="/WaggingCharlie.gif"
-                alt="Charlie Bull Wagging Tail"
-                width={600}
-                height={600}
-                className="rounded-lg w-full h-auto max-w-md"
-                unoptimized
-              />
-              <div className="text-4xl text-center p-4 italic">Q3: Lambo!</div>
+          <div className="text-4xl text-center pb-4 font-bold">Charlie&apos;s Cross-Chain Journey</div>
+          <div className="text-xl text-center text-base-content/80 mb-10">Join Charlie as he travels across multiple blockchains with your help!</div>
+          
+          <div className="flex flex-col max-w-4xl mx-auto">
+            {/* Step 1 */}
+            <div className="roadmap-step flex flex-col md:flex-row items-center gap-6 mb-12 fade-in">
+              <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">1</div>
+              <div className="step-content flex-grow">
+                <h3 className="text-2xl font-bold mb-2 text-center">Buy, HODL & Bridge $CHAR</h3>
+                <p className="text-lg mb-4 text-center">Start your journey by acquiring Charlie Bull tokens and bridge them across multiple chains with Axelar.</p>
+                <div className="bg-base-200 p-4 rounded-lg">
+                  <p className="text-base font-semibold text-center">How to get started:</p>
+                  <p className="text-base mb-3 text-center">Use the widget in our &quot;Buy it Now&quot; section or your favorite DEX.</p>
+                  <div className="flex items-center justify-center mt-2">
+                    <a 
+                      href="https://interchain.axelar.dev/arbitrum/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn btn-sm btn-outline gap-2"
+                    >
+                      <Image src="/AxelarLogo.png" alt="Axelar" width={24} height={24} className="rounded-sm" />
+                      Bridge with Axelar
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Step 2 with Chain Logos */}
+            <div className="roadmap-step flex flex-col md:flex-row items-center gap-6 mb-12 fade-in">
+              <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">2</div>
+              <div className="step-content flex-grow">
+                <h3 className="text-2xl font-bold mb-2 text-center">Provide Liquidity</h3>
+                <p className="text-lg mb-4 text-center">Help Charlie grow by providing liquidity on your favorite chains. YOU decide where Charlie goes next!</p>
+                
+                <div className="flex justify-center items-center" ref={logoContainerRef}>
+                  <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/ETHLogo.png" alt="Ethereum" width={75} height={75} className="rounded-lg opacity-60" />
+                  </a>
+                  <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/AvaxLogo.png" alt="Avalanche" width={75} height={75} className="rounded-lg opacity-60" />
+                  </a>
+                  <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/ArbLogo.png" alt="Arbitrum" width={75} height={75} className="rounded-lg opacity-60" />
+                  </a>
+                </div>
+                
+                <div className="flex justify-center items-center mt-7">
+                  <a href="https://fusionx.finance/add/MNT/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=mantle" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/MantleLogo.png" alt="Mantle" width={75} height={75} className="rounded-lg opacity-60" />
+                  </a>
+                  <a href="https://aerodrome.finance/pools?token0=eth&token1=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/BaseLogo.png" alt="Base" width={75} height={75} className="rounded-lg mx-5 opacity-60" />
+                  </a>
+                  <a href="https://pancakeswap.finance/add/ETH/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=linea" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/LineaLogo.png" alt="Linea" width={75} height={75} className="rounded-lg opacity-60" />
+                  </a>
+                </div>
+                
+                <div className="flex justify-center items-center mt-7">
+                  <a href="https://app.thruster.finance/add" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/BlastLogo.png" alt="Blast" width={75} height={75} className="rounded-lg opacity-60" />
+                  </a>
+                  <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/PolLogo.png" alt="Polygon" width={75} height={75} className="rounded-lg opacity-75" />
+                  </a>
+                  <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <Image src="/BNBLogo.png" alt="BNB Chain" width={75} height={75} className="rounded-lg opacity-75" />
+                  </a>
+                </div>
+                
+                <div className="bg-base-200 p-4 rounded-lg mt-7">
+                  <p className="text-base font-semibold text-center">How to provide LP:</p>
+                  <p className="text-base text-center">Click on any chain logo to visit the appropriate DEX and create an ETH-$CHAR liquidity pair.</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Step 3 */}
+            <div className="roadmap-step flex flex-col md:flex-row items-center gap-6 fade-in">
+              <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">3</div>
+              <div className="step-content flex-grow">
+                <h3 className="text-2xl font-bold mb-2 text-center">Spread the Word & Enjoy the Ride!</h3>
+                <p className="text-lg mb-4 text-center">Share Charlie with friends, grow the community, and watch as we reach the moon together.</p>
+                
+                <div className="flex justify-center mt-6">
+                  <div className="flex flex-col items-center max-w-xs">
+                    <Image
+                      src="/WaggingCharlie.gif"
+                      alt="Charlie Bull Wagging Tail"
+                      width={300}
+                      height={300}
+                      className="rounded-lg w-full h-auto"
+                      unoptimized
+                    />
+                    <div className="text-3xl text-center p-4 italic font-bold">Lambo Soon!</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

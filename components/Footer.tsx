@@ -4,12 +4,13 @@ import Image from "next/image";
 export function Footer() {
   return (
     <div className="bg-base-100 min-h-0 py-10 px-1 lg:mb-0">
+      
       <div className="px-5 mt-10">
         <ul className="flex items-end justify-center space-x-4 lg:space-x-8">
           {/* Twitter Logo */}
           <li className="flex items-end pb-5">
             <a
-              href="https://x.com/NFTLadyEve"
+              href="hhttps://x.com/CharlieBullAI"
               target="_blank"
               rel="noreferrer"
               className="transition-transform hover:scale-110 hover:-translate-y-1 duration-200"
@@ -32,7 +33,7 @@ export function Footer() {
           {/* Telegram Logo */}
           <li className="flex items-end pb-5">
             <a
-              href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA"
+              href="https://t.me/charliebullai"
               target="_blank"
               rel="noreferrer"
               className="transition-transform hover:scale-110 hover:-translate-y-1 duration-200"
@@ -44,6 +45,9 @@ export function Footer() {
       </div>
       
       {/* Copyright Text */}
+      <div className="text-center mt-6 text-sm font-medium text-gray-600 dark:text-gray-400">
+            <p className="text-xl">Join us in making Charlie the first cross-chain token!</p>
+          </div>
       <p className="text-center mt-6 text-sm font-medium text-gray-600 dark:text-gray-400">
         © {new Date().getFullYear()} by Charlie. All rights reserved!
       </p>

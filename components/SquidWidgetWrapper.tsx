@@ -110,10 +110,24 @@ export function SquidWidgetWrapper() {
     },
     initialAssets: {
       from: {
-        address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+        address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
         chainId: "1",
       },
+      to: {
+        address: "0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1",
+        chainId: "42161",
+      },
     },
+    defaultTokensPerChain: [
+      {
+        address: "0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1", // ETH on Ethereum
+        chainId: "1",
+      },
+      {
+        address: "0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1", // ETH on Arbitrum
+        chainId: "42161",
+      },
+    ],
     degenMode: true,
   };
    // Don't render anything until we're in the browser
