@@ -7,11 +7,18 @@ import ErrorBoundary from "./ErrorBoundary";
 import { SquidWidgetWrapper } from "./SquidWidgetWrapper";
 
 export function LandingPage() {
+  // Create separate refs for each animated section
   const homeRef = useRef<HTMLDivElement>(null);
   const howToBuyRef = useRef<HTMLDivElement>(null);
   const tokenomicsRef = useRef<HTMLDivElement>(null);
   const roadmapRef = useRef<HTMLDivElement>(null);
-  const logoContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Individual refs for subsections that need their own fade animations
+  const axelarLogoRef = useRef<HTMLDivElement>(null);
+  const step1Ref = useRef<HTMLDivElement>(null);
+  const step2Ref = useRef<HTMLDivElement>(null);
+  const step3Ref = useRef<HTMLDivElement>(null);
+  const chainLogosRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,7 +33,11 @@ export function LandingPage() {
       { threshold: 0.1 },
     );
 
-    [homeRef, howToBuyRef, tokenomicsRef, roadmapRef, logoContainerRef].forEach(ref => {
+    // Add all refs to be observed
+    [
+      homeRef, howToBuyRef, tokenomicsRef, roadmapRef, 
+      axelarLogoRef, step1Ref, step2Ref, step3Ref, chainLogosRef
+    ].forEach(ref => {
       if (ref.current) {
         observer.observe(ref.current);
 
@@ -38,7 +49,10 @@ export function LandingPage() {
     });
 
     return () => {
-      [homeRef, howToBuyRef, tokenomicsRef, roadmapRef, logoContainerRef].forEach(ref => {
+      [
+        homeRef, howToBuyRef, tokenomicsRef, roadmapRef, 
+        axelarLogoRef, step1Ref, step2Ref, step3Ref, chainLogosRef
+      ].forEach(ref => {
         if (ref.current) {
           observer.unobserve(ref.current);
         }
@@ -61,7 +75,7 @@ export function LandingPage() {
 
         <div className="flex justify-center px-5 mb-4">
           <Image
-            src="/PantingCharlie2.gif"
+            src="/PantingCharlie3.gif"
             alt="Charlie Panting"
             width={400}
             height={400}
@@ -145,7 +159,7 @@ export function LandingPage() {
               <SquidWidgetWrapper />
             </ErrorBoundary>
           </div>
-          <div className="flex justify-center items-center py-7" ref={logoContainerRef}>
+          <div className="flex justify-center items-center py-7" ref={axelarLogoRef}>
             <div className="text-3xl text-gray-600 dark:text-gray-300">Powered by</div>
             <a href="https://interchain.axelar.dev/arbitrum/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
               <Image src="/AxelarLogo.png" alt="Axelar Logo" width={75} height={75} className="rounded-lg opacity-85" />
@@ -158,7 +172,7 @@ export function LandingPage() {
         </div>
       </section>
 
-            {/* <hr className="border-t-2 border-secondary w-full" />
+      {/* <hr className="border-t-2 border-secondary w-full" />
 
       <section id="ai-integration" ref={aiRef} className="pt-20 lg:pt-10">
         <div className="px-5">
@@ -201,9 +215,9 @@ export function LandingPage() {
           
           <div className="flex flex-col max-w-4xl mx-auto">
             {/* Step 1 */}
-            <div className="roadmap-step flex flex-col md:flex-row items-center gap-6 mb-12 fade-in">
+            <div className="roadmap-step flex flex-col items-center gap-6 mb-12 fade-in" ref={step1Ref}>
               <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">1</div>
-              <div className="step-content flex-grow">
+              <div className="step-content flex-grow w-full">
                 <h3 className="text-2xl font-bold mb-2 text-center">Buy, HODL & Bridge $CHAR</h3>
                 <p className="text-lg mb-4 text-center">Start your journey by acquiring Charlie Bull tokens and bridge them across multiple chains with Axelar.</p>
                 <div className="bg-base-200 p-4 rounded-lg">
@@ -225,46 +239,48 @@ export function LandingPage() {
             </div>
             
             {/* Step 2 with Chain Logos */}
-            <div className="roadmap-step flex flex-col md:flex-row items-center gap-6 mb-12 fade-in">
+            <div className="roadmap-step flex flex-col items-center gap-6 mb-12 fade-in" ref={step2Ref}>
               <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">2</div>
-              <div className="step-content flex-grow">
+              <div className="step-content flex-grow w-full">
                 <h3 className="text-2xl font-bold mb-2 text-center">Provide Liquidity</h3>
-                <p className="text-lg mb-4 text-center">Help Charlie grow by providing liquidity on your favorite chains. YOU decide where Charlie goes next!</p>
+                <p className="text-lg mb-6 text-center">Help Charlie grow by providing liquidity on your favorite chains. YOU decide where Charlie goes next!</p>
                 
-                <div className="flex justify-center items-center" ref={logoContainerRef}>
-                  <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/ETHLogo.png" alt="Ethereum" width={75} height={75} className="rounded-lg opacity-60" />
-                  </a>
-                  <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/AvaxLogo.png" alt="Avalanche" width={75} height={75} className="rounded-lg opacity-60" />
-                  </a>
-                  <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/ArbLogo.png" alt="Arbitrum" width={75} height={75} className="rounded-lg opacity-60" />
-                  </a>
-                </div>
-                
-                <div className="flex justify-center items-center mt-7">
-                  <a href="https://fusionx.finance/add/MNT/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=mantle" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/MantleLogo.png" alt="Mantle" width={75} height={75} className="rounded-lg opacity-60" />
-                  </a>
-                  <a href="https://aerodrome.finance/pools?token0=eth&token1=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/BaseLogo.png" alt="Base" width={75} height={75} className="rounded-lg mx-5 opacity-60" />
-                  </a>
-                  <a href="https://pancakeswap.finance/add/ETH/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=linea" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/LineaLogo.png" alt="Linea" width={75} height={75} className="rounded-lg opacity-60" />
-                  </a>
-                </div>
-                
-                <div className="flex justify-center items-center mt-7">
-                  <a href="https://app.thruster.finance/add" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/BlastLogo.png" alt="Blast" width={75} height={75} className="rounded-lg opacity-60" />
-                  </a>
-                  <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/PolLogo.png" alt="Polygon" width={75} height={75} className="rounded-lg opacity-75" />
-                  </a>
-                  <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
-                    <Image src="/BNBLogo.png" alt="BNB Chain" width={75} height={75} className="rounded-lg opacity-75" />
-                  </a>
+                <div ref={chainLogosRef} className="chain-logos-container fade-in opacity-0">
+                  <div className="flex justify-center items-center">
+                    <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/ETHLogo.png" alt="Ethereum" width={75} height={75} className="rounded-lg opacity-60" />
+                    </a>
+                    <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/AvaxLogo.png" alt="Avalanche" width={75} height={75} className="rounded-lg opacity-60" />
+                    </a>
+                    <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/ArbLogo.png" alt="Arbitrum" width={75} height={75} className="rounded-lg opacity-60" />
+                    </a>
+                  </div>
+                  
+                  <div className="flex justify-center items-center mt-7">
+                    <a href="https://fusionx.finance/add/MNT/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=mantle" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/MantleLogo.png" alt="Mantle" width={75} height={75} className="rounded-lg opacity-60" />
+                    </a>
+                    <a href="https://aerodrome.finance/pools?token0=eth&token1=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/BaseLogo.png" alt="Base" width={75} height={75} className="rounded-lg mx-5 opacity-60" />
+                    </a>
+                    <a href="https://pancakeswap.finance/add/ETH/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=linea" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/LineaLogo.png" alt="Linea" width={75} height={75} className="rounded-lg opacity-60" />
+                    </a>
+                  </div>
+                  
+                  <div className="flex justify-center items-center mt-7">
+                    <a href="https://app.thruster.finance/add" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/BlastLogo.png" alt="Blast" width={75} height={75} className="rounded-lg opacity-60" />
+                    </a>
+                    <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/PolLogo.png" alt="Polygon" width={75} height={75} className="rounded-lg opacity-75" />
+                    </a>
+                    <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                      <Image src="/BNBLogo.png" alt="BNB Chain" width={75} height={75} className="rounded-lg opacity-75" />
+                    </a>
+                  </div>
                 </div>
                 
                 <div className="bg-base-200 p-4 rounded-lg mt-7">
@@ -275,9 +291,9 @@ export function LandingPage() {
             </div>
             
             {/* Step 3 */}
-            <div className="roadmap-step flex flex-col md:flex-row items-center gap-6 fade-in">
+            <div className="roadmap-step flex flex-col items-center gap-6 fade-in" ref={step3Ref}>
               <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">3</div>
-              <div className="step-content flex-grow">
+              <div className="step-content flex-grow w-full">
                 <h3 className="text-2xl font-bold mb-2 text-center">Spread the Word & Enjoy the Ride!</h3>
                 <p className="text-lg mb-4 text-center">Share Charlie with friends, grow the community, and watch as we reach the moon together.</p>
                 

@@ -10,19 +10,19 @@ export function Footer() {
           {/* Twitter Logo */}
           <li className="flex items-end pb-5">
             <a
-              href="hhttps://x.com/CharlieBullAI"
+              href="https://bsky.app/profile/charliebull.art"
               target="_blank"
               rel="noreferrer"
               className="transition-transform hover:scale-110 hover:-translate-y-1 duration-200"
             >
-              <Image src="/TwitterXLogo.png" alt="Twitter Logo" width={75} height={75} className="rounded-lg" />
+              <Image src="/BlueSkyLogo.png" alt="BlueSky Logo" width={75} height={75} className="rounded-lg" />
             </a>
           </li>
 
           {/* Charlie Bull Image */}
           <li className="flex items-center">
             <Image 
-              src="/CharlieBull.png" 
+              src="/CharlieBull2.png" 
               alt="Charlie Bull Headshot" 
               width={300} 
               height={300} 
