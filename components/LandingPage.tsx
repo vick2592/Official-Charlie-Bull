@@ -250,7 +250,7 @@ export function LandingPage() {
                     <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
                       <Image src="/ETHLogo.png" alt="Ethereum" width={75} height={75} className="rounded-lg opacity-60" />
                     </a>
-                    <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <a href="https://lfj.gg/avalanche/pool/v1/create" target="_blank" className="mx-5" rel="noopener noreferrer">
                       <Image src="/AvaxLogo.png" alt="Avalanche" width={75} height={75} className="rounded-lg opacity-60" />
                     </a>
                     <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
@@ -274,10 +274,10 @@ export function LandingPage() {
                     <a href="https://app.thruster.finance/add" target="_blank" className="mx-5" rel="noopener noreferrer">
                       <Image src="/BlastLogo.png" alt="Blast" width={75} height={75} className="rounded-lg opacity-60" />
                     </a>
-                    <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <a href="https://dapp.quickswap.exchange/pool/v2/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1/ETH" target="_blank" className="mx-5" rel="noopener noreferrer">
                       <Image src="/PolLogo.png" alt="Polygon" width={75} height={75} className="rounded-lg opacity-75" />
                     </a>
-                    <a href="https://google.com" target="_blank" className="mx-5" rel="noopener noreferrer">
+                    <a href="https://pancakeswap.finance/add/BNB/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=bsc" target="_blank" className="mx-5" rel="noopener noreferrer">
                       <Image src="/BNBLogo.png" alt="BNB Chain" width={75} height={75} className="rounded-lg opacity-75" />
                     </a>
                   </div>
