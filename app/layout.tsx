@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { Metadata } from "next";
 import { FixedThemeSwitcher } from "../components/ThemeSwitcher";
+import { LoadingScreen } from "../components/LoadingScreen";
 
 export const metadata: Metadata = {
   title: "Charlie Bull | Cross-Chain AI Pup on Ethereum",
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="mydark">
       <body>
+        <LoadingScreen />
         {children}
         <FixedThemeSwitcher />
       </body>

@@ -81,6 +81,7 @@ export function LandingPage() {
             height={400}
             className="rounded-lg h-auto"
             unoptimized
+            priority
           />
         </div>
         
@@ -160,11 +161,11 @@ export function LandingPage() {
             </ErrorBoundary>
           </div>
           <div className="flex justify-center items-center py-7" ref={axelarLogoRef}>
-            <div className="text-3xl text-gray-600 dark:text-gray-300">Powered by</div>
+            <div className="text-3xl text-gray-600 dark:text-gray-400">Powered by</div>
             <a href="https://interchain.axelar.dev/arbitrum/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
               <Image src="/AxelarLogo.png" alt="Axelar Logo" width={75} height={75} className="rounded-lg opacity-85" />
             </a>
-            <div className="text-3xl text-gray-600 dark:text-gray-300"> & </div>
+            <div className="text-3xl text-gray-600 dark:text-gray-400"> & </div>
             <a href="https://www.squidrouter.com/" className="mx-5" target="_blank" rel="noopener noreferrer">
               <Image src="/SquidLogo.png" alt="Squid Logo" width={75} height={75} className="rounded-lg opacity-85" />
             </a>
@@ -298,18 +299,57 @@ export function LandingPage() {
                 <p className="text-lg mb-4 text-center">Share Charlie with friends, grow the community, and watch as we reach the moon together.</p>
                 
                 <div className="flex justify-center mt-6">
-                  <div className="flex flex-col items-center max-w-xs">
-                    <Image
-                      src="/WaggingCharlie.gif"
-                      alt="Charlie Bull Wagging Tail"
-                      width={300}
-                      height={300}
-                      className="rounded-lg w-full h-auto"
-                      unoptimized
-                    />
-                    <div className="text-3xl text-center p-4 italic font-bold">Lambo Soon!</div>
+                <div className="flex flex-col items-center max-w-xs md:max-w-sm lg:max-w-md">
+                  <Image
+                    src="/WaggingCharlie.gif"
+                    alt="Charlie Bull Wagging Tail"
+                    width={450}
+                    height={450}
+                    className="rounded-lg w-full h-auto md:w-[350px] lg:w-[400px]"
+                    unoptimized
+                  />
+                  <div className="text-center p-4">Follow us for official announcements</div>
+                  
+                  {/* Social Media Icons */}
+                  <div className="flex justify-center w-full mb-4 mt-4">
+                    <div className="flex justify-between w-full max-w-[240px] md:max-w-[280px]">
+                      {/* Left Social - BlueSky */}
+                      <a
+                        href="https://bsky.app/profile/charliebull.art"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="transform hover:scale-110 hover:-translate-y-1 transition duration-200"
+                      >
+                        <Image 
+                          src="/BlueSkyLogo.png" 
+                          alt="BlueSky Logo" 
+                          width={65}
+                          height={65}
+                          className="rounded-lg w-[65px] h-[65px] md:w-[75px] md:h-[75px]"
+                        />
+                      </a>
+                      
+                      {/* Right Social - Telegram */}
+                      <a
+                        href="https://t.me/charliebullai"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="transform hover:scale-110 hover:-translate-y-1 transition duration-200"
+                      >
+                        <Image 
+                          src="/TelegramLogo.png" 
+                          alt="Telegram Logo" 
+                          width={65}
+                          height={65}
+                          className="rounded-lg w-[65px] h-[65px] md:w-[75px] md:h-[75px]"
+                        />
+                      </a>
+                    </div>
                   </div>
+                  
+                  <div className="text-3xl text-center p-4 italic font-bold">Lmabo Sooooon!</div>
                 </div>
+              </div>
               </div>
             </div>
           </div>

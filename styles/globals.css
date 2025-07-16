@@ -76,3 +76,17 @@ section[id] {
   opacity: 0;
   animation: fadeIn 1s forwards;
 }
+
+/* Add to your global CSS file */
+.fade-in-slow {
+  animation: fadeInSlow 1s ease-in-out forwards;
+}
+
+@keyframes fadeInSlow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

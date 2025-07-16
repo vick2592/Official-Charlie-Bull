@@ -167,6 +167,7 @@ export function Header() {
                   imgElement.onerror = null;
                   imgElement.src = "/CharlieBull.png";
                 }}
+                priority
               />
             </div>
             <div className="flex flex-col">

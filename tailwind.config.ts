@@ -19,8 +19,8 @@ const config: Config = {
         'sawer': ['Sawer', 'sans-serif'],
       },
       boxShadow: {
-        center: "0 0 12px -2px rgb(0 0 0 / 0.05)",
-        secondary: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        center: "0 0 12px -2px rgb(0 0 0 / 0.25)",  // Even darker shadow
+        secondary: "0 6px 10px -1px rgba(0, 0, 0, 0.35), 0 2px 5px -1px rgba(0, 0, 0, 0.2)",  // Much darker shadow
       },
       animation: {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
@@ -32,19 +32,19 @@ const config: Config = {
     themes: [
       {
         light: {
-          primary: "#93BBFB",
-          "primary-content": "#212638",
-          secondary: "#DAE8FF",
+          primary: "#5A86C0",         // Darker blue primary color - no pink tint
+          "primary-content": "#FFFFFF", // White text for better contrast
+          secondary: "#C1D4F0",       // Darker secondary
           "secondary-content": "#212638",
-          accent: "#93BBFB",
-          "accent-content": "#212638",
+          accent: "#5A86C0",          // Updated to match primary
+          "accent-content": "#FFFFFF",
           neutral: "#212638",
-          "neutral-content": "#212638",
-          "base-100": "#E0F7FA",
-          "base-200": "#B2EBF2",
-          "base-300": "#80DEEA",
+          "neutral-content": "#FFFFFF",
+          "base-100": "#CAEDF0",      // Darker background (main)
+          "base-200": "#A0DFE6",      // Darker secondary background
+          "base-300": "#70D0DC",      // Darker tertiary background
           "base-content": "#1d3b5e",
-          info: "#93BBFB",
+          info: "#5A86C0",            // Updated to match primary
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
@@ -79,4 +79,3 @@ const config: Config = {
 };
 
 export default config;
-
