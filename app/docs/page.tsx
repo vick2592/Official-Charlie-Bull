@@ -104,7 +104,7 @@ export default function WhitepaperPage() {
                     <td>Community</td>
                     <td>35%</td>
                     <td>147,241,500,000,000</td>
-                    <td>Community Rewards + Airdrops</td>
+                    <td>Community Rewards and Airdrops</td>
                   </tr>
                   <tr>
                     <td>Team & Development</td>
