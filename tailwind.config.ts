@@ -44,7 +44,7 @@ const config: Config = {
           "base-200": "#A0DFE6",      // Darker secondary background
           "base-300": "#70D0DC",      // Darker tertiary background
           "base-content": "#1d3b5e",
-          info: "#5A86C0",            // Updated to match primary
+          info: "#4A76B0",            // Updated to match primary
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
@@ -66,7 +66,7 @@ const config: Config = {
           "base-200": "#0f1e33",
           "base-300": "#0a1422",
           "base-content": "#F9FBFF",
-          info: "#385183",
+          info: "#4A6BA3",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",

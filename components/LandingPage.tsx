@@ -308,12 +308,12 @@ export function LandingPage() {
                     className="rounded-lg w-full h-auto md:w-[350px] lg:w-[400px]"
                     unoptimized
                   />
-                  <div className="text-center p-4">Follow us for official announcements</div>
-                  
+                  <div className="text-center p-4">Follow Char for official announcements</div>
+
                   {/* Social Media Icons */}
                   <div className="flex justify-center w-full mb-4 mt-4">
                     <div className="flex justify-between w-full max-w-[240px] md:max-w-[280px]">
-                      {/* Left Social - BlueSky */}
+                      {/* BlueSky */}
                       <a
                         href="https://bsky.app/profile/charliebull.art"
                         target="_blank"
@@ -328,8 +328,24 @@ export function LandingPage() {
                           className="rounded-lg w-[65px] h-[65px] md:w-[75px] md:h-[75px]"
                         />
                       </a>
+
+                      {/* Twitter/X */}
+                      <a
+                        href="https://x.com/CharlieBullArt"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="transform hover:scale-110 hover:-translate-y-1 transition duration-200"
+                      >
+                        <Image 
+                          src="/BlueXLogo.png" 
+                          alt="TwitterX Logo" 
+                          width={65}
+                          height={65}
+                          className="rounded-lg w-[65px] h-[65px] md:w-[75px] md:h-[75px]"
+                        />
+                      </a>
                       
-                      {/* Right Social - Telegram */}
+                      {/* Telegram */}
                       <a
                         href="https://t.me/charliebullai"
                         target="_blank"
@@ -346,7 +362,33 @@ export function LandingPage() {
                       </a>
                     </div>
                   </div>
-                  
+
+                  {/* Whitepaper Button */}
+                  <div className="flex justify-center w-full mb-4">
+                    <a
+                      href="/docs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-secondary btn-lg gap-2 transform hover:scale-105 transition duration-200 shadow-lg"
+                    >
+                      <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width="20" 
+                        height="20" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                      >
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                        <polyline points="14,2 14,8 20,8"/>
+                      </svg>
+                      Charlie&apos;s Woof Paper
+                    </a>
+                  </div>
+
                   <div className="text-3xl text-center p-4 italic font-bold">Lmabo Sooooon!</div>
                 </div>
               </div>
