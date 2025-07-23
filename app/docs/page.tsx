@@ -110,7 +110,7 @@ export default function WhitepaperPage() {
                     <td>Team & Development</td>
                     <td>15%</td>
                     <td>63,103,500,000,000</td>
-                    <td>Charlie Bull IP Expansion</td>
+                    <td>IP and Project Expansion</td>
                   </tr>
                 </tbody>
               </table>
@@ -125,14 +125,15 @@ export default function WhitepaperPage() {
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-lg">Q3 2025 - Token Generation Event</h3>
-                  <p className="text-base-content/70">Launch $CHAR token with initial liquidity on Ethereum</p>
+                  <p className="text-base-content/70">Launch $CHAR token with initial liquidity on Base L2</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-lg">Q3 - Q4 2025 - Cross-Chain Expansion</h3>
-                  <p className="text-base-content/70">Deploy on Arbitrum, Base, and Avalanche networks</p>
+                  <p className="text-base-content/70">Bridge and Provide Liquidity on Arbitrum, Ethereum, 
+                  Avalanche other supported networks on Axelar.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -147,7 +148,7 @@ export default function WhitepaperPage() {
                 <div>
                   <h3 className="font-semibold text-lg">Q1 2026 and Beyond - NFT launch and IP Developments</h3>
                   <p className="text-base-content/70">Launch Charlie&apos;s Angels NFT collection and 
-                  build on Charlie Bull&apos;s IP.</p>
+                  build and grow Charlie Bull&apos;s IP.</p>
                 </div>
               </div>
             </div>
