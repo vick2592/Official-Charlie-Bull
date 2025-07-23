@@ -133,7 +133,7 @@ export default function WhitepaperPage() {
                 <div>
                   <h3 className="font-semibold text-lg">Q3 - Q4 2025 - Cross-Chain Expansion</h3>
                   <p className="text-base-content/70">Bridge and Provide Liquidity on Arbitrum, Ethereum, 
-                  Avalanche other supported networks on Axelar.</p>
+                  Avalanche and other supported networks on Axelar.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -148,7 +148,7 @@ export default function WhitepaperPage() {
                 <div>
                   <h3 className="font-semibold text-lg">Q1 2026 and Beyond - NFT launch and IP Developments</h3>
                   <p className="text-base-content/70">Launch Charlie&apos;s Angels NFT collection and 
-                  build and grow Charlie Bull&apos;s IP.</p>
+                  develop Charlie Bull&apos;s IP.</p>
                 </div>
               </div>
             </div>
