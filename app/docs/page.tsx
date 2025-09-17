@@ -83,37 +83,48 @@ export default function WhitepaperPage() {
           {/* Tokenomics */}
           <section id="tokenomics" className="mb-12">
             <h2 className="text-3xl font-bold mb-4">3. Tokenomics</h2>
-            <div className="overflow-x-auto">
-              <table className="table table-zebra w-full">
-                <thead>
-                  <tr>
-                    <th>Allocation</th>
-                    <th>Percentage</th>
-                    <th>Tokens</th>
-                    <th>Purpose</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Liquidity</td>
-                    <td>50%</td>
-                    <td>210,345,000,000,000</td>
-                    <td>DEX Liquidity Pools</td>
-                  </tr>
-                  <tr>
-                    <td>Community</td>
-                    <td>35%</td>
-                    <td>147,241,500,000,000</td>
-                    <td>Community Airdrop</td>
-                  </tr>
-                  <tr>
-                    <td>Team & Development</td>
-                    <td>15%</td>
-                    <td>63,103,500,000,000</td>
-                    <td>IP and Project Expansion</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="rounded-lg p-4">
+              <div className="overflow-x-auto">
+                <table className="table w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="bg-primary/10">
+                      <th className="border border-base-300">Allocation</th>
+                      <th className="border border-base-300">%</th>
+                      <th className="border border-base-300">Tokens (Millions)</th>
+                      <th className="border border-base-300 hidden sm:table-cell">Purpose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-base-300 font-semibold">Liquidity</td>
+                      <td className="border border-base-300">50%</td>
+                      <td className="border border-base-300">210,345.0M</td>
+                      <td className="border border-base-300 hidden sm:table-cell">DEX Liquidity Pools</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-base-300 font-semibold">Community</td>
+                      <td className="border border-base-300">35%</td>
+                      <td className="border border-base-300">147,241.5M</td>
+                      <td className="border border-base-300 hidden sm:table-cell">Community Airdrop</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-base-300 font-semibold">Team & Dev</td>
+                      <td className="border border-base-300">15%</td>
+                      <td className="border border-base-300">63,103.5M</td>
+                      <td className="border border-base-300 hidden sm:table-cell">IP and Project Expansion</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                {/* Mobile Purpose Legend */}
+                <div className="mt-4 sm:hidden">
+                  <div className="text-sm space-y-2">
+                    <div><span className="font-semibold">Liquidity:</span> DEX Liquidity Pools</div>
+                    <div><span className="font-semibold">Community:</span> Community Airdrop</div>
+                    <div><span className="font-semibold">Team & Dev:</span> IP and Project Expansion</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
           
