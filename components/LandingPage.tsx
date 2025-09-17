@@ -75,7 +75,7 @@ export function LandingPage() {
 
         <div className="flex justify-center px-5 mb-4">
           <Image
-            src="/PantingCharlie3.gif"
+            src="/charlie-pant.gif"
             alt="Charlie Panting"
             width={400}
             height={400}
@@ -184,26 +184,331 @@ export function LandingPage() {
       <hr className="border-t-2 border-secondary w-full mt-8" />
 
       <section id="tokenomics" ref={tokenomicsRef} className="pt-16 lg:pt-8">
-        <div className="text-4xl pb-4 text-center font-bold">Tokenomics</div>
-        <div className="flex justify-center mt-4">
-          <Image
-            src="/Tokenomics.png"
-            alt="Tokenomics"
-            width={600}
-            height={600}
-            className="rounded-lg w-full h-auto max-w-md"
-          />
+        <div className="text-4xl pb-8 text-center font-bold">Tokenomics</div>
+
+        {/* Tokenomics Breakdown */}
+        <div className="max-w-4xl mx-auto px-5 mb-8">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
+            
+            {/* Pie Chart */}
+            <div className="relative w-80 h-80">
+              <svg className="w-full h-full transform -rotate-90 transition-all duration-300" viewBox="0 0 200 200">
+                {/* Background circle */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="80"
+                  fill="transparent"
+                  stroke="oklch(var(--b3))"
+                  strokeWidth="30"
+                  opacity="0.3"
+                />
+                
+                {/* Liquidity Pool - 50% */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="80"
+                  fill="transparent"
+                  stroke="#5A86C0"
+                  strokeWidth="30"
+                  strokeDasharray="251.33 251.33"
+                  strokeDashoffset="0"
+                  className="transition-all duration-300 cursor-pointer liquidity-segment"
+                  style={{ strokeLinecap: 'round' }}
+                />
+                
+                {/* Community Airdrop - 35% */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="80"
+                  fill="transparent"
+                  stroke="#C1D4F0"
+                  strokeWidth="30"
+                  strokeDasharray="175.93 326.73"
+                  strokeDashoffset="-251.33"
+                  className="transition-all duration-300 delay-300 cursor-pointer community-segment"
+                  style={{ strokeLinecap: 'round' }}
+                />
+                
+                {/* Team & Development - 15% */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="80"
+                  fill="transparent"
+                  stroke="#70D0DC"
+                  strokeWidth="30"
+                  strokeDasharray="75.4 425.86"
+                  strokeDashoffset="-427.26"
+                  className="transition-all duration-300 delay-600 cursor-pointer team-segment"
+                  style={{ strokeLinecap: 'round' }}
+                />
+                
+                {/* Center Charlie Token - Smaller Again */}
+                <foreignObject x="45" y="45" width="110" height="110">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Image
+                      src="/token-main.svg"
+                      alt="Charlie Token"
+                      width={90}
+                      height={90}
+                      className="animate-spin-slow hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                </foreignObject>
+              </svg>
+              
+              {/* Separate hoverable elements for each segment - CORRECTED POSITIONS */}
+              <div className="absolute inset-0">
+                {/* Liquidity Pool hover element - 50% (RIGHT HALF - blue segment) */}
+                <div 
+                  className="absolute top-0 right-0 w-1/2 h-full cursor-pointer transition-all duration-300 hover:scale-102"
+                  onMouseEnter={() => {
+                    const legend = document.querySelector('[data-legend="liquidity"]');
+                    const segment = document.querySelector('.liquidity-segment');
+                    if (legend) {
+                      legend.classList.add('scale-105', 'bg-primary/8', 'rounded-lg', 'p-1', '-m-1');
+                    }
+                    if (segment) {
+                      segment.setAttribute('stroke-width', '35');
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    const legend = document.querySelector('[data-legend="liquidity"]');
+                    const segment = document.querySelector('.liquidity-segment');
+                    if (legend) {
+                      legend.classList.remove('scale-105', 'bg-primary/8', 'rounded-lg', 'p-1', '-m-1');
+                    }
+                    if (segment) {
+                      segment.setAttribute('stroke-width', '30');
+                    }
+                  }}
+                ></div>
+                
+                {/* Community Airdrop hover element - 35% (BOTTOM LEFT - light blue segment) */}
+                <div 
+                  className="absolute bottom-0 left-0 w-3/5 h-3/5 cursor-pointer transition-all duration-300 hover:scale-102"
+                  style={{
+                    clipPath: 'polygon(0% 20%, 0% 100%, 80% 100%, 100% 50%, 20% 0%)'
+                  }}
+                  onMouseEnter={() => {
+                    const legend = document.querySelector('[data-legend="community"]');
+                    const segment = document.querySelector('.community-segment');
+                    if (legend) {
+                      legend.classList.add('scale-105', 'bg-secondary/8', 'rounded-lg', 'p-1', '-m-1');
+                    }
+                    if (segment) {
+                      segment.setAttribute('stroke-width', '35');
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    const legend = document.querySelector('[data-legend="community"]');
+                    const segment = document.querySelector('.community-segment');
+                    if (legend) {
+                      legend.classList.remove('scale-105', 'bg-secondary/8', 'rounded-lg', 'p-1', '-m-1');
+                    }
+                    if (segment) {
+                      segment.setAttribute('stroke-width', '30');
+                    }
+                  }}
+                ></div>
+                
+                {/* Team hover element - 15% (TOP LEFT - teal segment) */}
+                <div 
+                  className="absolute top-0 left-0 w-2/5 h-2/5 cursor-pointer transition-all duration-300 hover:scale-102"
+                  style={{
+                    clipPath: 'polygon(0% 0%, 100% 0%, 100% 80%, 20% 100%, 0% 20%)'
+                  }}
+                  onMouseEnter={() => {
+                    const legend = document.querySelector('[data-legend="team"]');
+                    const segment = document.querySelector('.team-segment');
+                    if (legend) {
+                      legend.classList.add('scale-105', 'bg-accent/8', 'rounded-lg', 'p-1', '-m-1');
+                    }
+                    if (segment) {
+                      segment.setAttribute('stroke-width', '35');
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    const legend = document.querySelector('[data-legend="team"]');
+                    const segment = document.querySelector('.team-segment');
+                    if (legend) {
+                      legend.classList.remove('scale-105', 'bg-accent/8', 'rounded-lg', 'p-1', '-m-1');
+                    }
+                    if (segment) {
+                      segment.setAttribute('stroke-width', '30');
+                    }
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-col gap-4 text-left">
+              <div 
+                className="flex items-center gap-3 transition-all duration-300 cursor-pointer" 
+                data-legend="liquidity"
+                onMouseEnter={() => {
+                  const legend = document.querySelector('[data-legend="liquidity"]');
+                  const segment = document.querySelector('.liquidity-segment');
+                  if (legend) {
+                    legend.classList.add('scale-105', 'bg-primary/8', 'rounded-lg', 'p-1', '-m-1');
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '35');
+                  }
+                }}
+                onMouseLeave={() => {
+                  const legend = document.querySelector('[data-legend="liquidity"]');
+                  const segment = document.querySelector('.liquidity-segment');
+                  if (legend) {
+                    legend.classList.remove('scale-105', 'bg-primary/8', 'rounded-lg', 'p-1', '-m-1');
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '30');
+                  }
+                }}
+                onClick={() => {
+                  const legend = document.querySelector('[data-legend="liquidity"]');
+                  const segment = document.querySelector('.liquidity-segment');
+                  if (legend) {
+                    legend.classList.add('scale-105', 'bg-primary/8', 'rounded-lg', 'p-1', '-m-1');
+                    setTimeout(() => {
+                      legend.classList.remove('scale-105', 'bg-primary/8', 'rounded-lg', 'p-1', '-m-1');
+                    }, 1000);
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '35');
+                    setTimeout(() => {
+                      segment.setAttribute('stroke-width', '30');
+                    }, 1000);
+                  }
+                }}
+              >
+                <div className="w-4 h-4 rounded-full" style={{backgroundColor: '#5A86C0'}}></div>
+                <div>
+                  <div className="text-xl font-bold">50% Liquidity Pool</div>
+                  <div className="text-sm text-base-content/70">Deep liquidity across all chains</div>
+                </div>
+              </div>
+              
+              <div 
+                className="flex items-center gap-3 transition-all duration-300 cursor-pointer" 
+                data-legend="community"
+                onMouseEnter={() => {
+                  const legend = document.querySelector('[data-legend="community"]');
+                  const segment = document.querySelector('.community-segment');
+                  if (legend) {
+                    legend.classList.add('scale-105', 'bg-secondary/8', 'rounded-lg', 'p-1', '-m-1');
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '35');
+                  }
+                }}
+                onMouseLeave={() => {
+                  const legend = document.querySelector('[data-legend="community"]');
+                  const segment = document.querySelector('.community-segment');
+                  if (legend) {
+                    legend.classList.remove('scale-105', 'bg-secondary/8', 'rounded-lg', 'p-1', '-m-1');
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '30');
+                  }
+                }}
+                onClick={() => {
+                  const legend = document.querySelector('[data-legend="community"]');
+                  const segment = document.querySelector('.community-segment');
+                  if (legend) {
+                    legend.classList.add('scale-105', 'bg-secondary/8', 'rounded-lg', 'p-1', '-m-1');
+                    setTimeout(() => {
+                      legend.classList.remove('scale-105', 'bg-secondary/8', 'rounded-lg', 'p-1', '-m-1');
+                    }, 1000);
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '35');
+                    setTimeout(() => {
+                      segment.setAttribute('stroke-width', '30');
+                    }, 1000);
+                  }
+                }}
+              >
+                <div className="w-4 h-4 rounded-full" style={{backgroundColor: '#C1D4F0'}}></div>
+                <div>
+                  <div className="text-xl font-bold">35% Community Airdrop</div>
+                  <div className="text-sm text-base-content/70">Includes 5% bonus for Base LP providers</div>
+                </div>
+              </div>
+              
+              <div 
+                className="flex items-center gap-3 transition-all duration-300 cursor-pointer" 
+                data-legend="team"
+                onMouseEnter={() => {
+                  const legend = document.querySelector('[data-legend="team"]');
+                  const segment = document.querySelector('.team-segment');
+                  if (legend) {
+                    legend.classList.add('scale-105', 'bg-accent/8', 'rounded-lg', 'p-1', '-m-1');
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '35');
+                  }
+                }}
+                onMouseLeave={() => {
+                  const legend = document.querySelector('[data-legend="team"]');
+                  const segment = document.querySelector('.team-segment');
+                  if (legend) {
+                    legend.classList.remove('scale-105', 'bg-accent/8', 'rounded-lg', 'p-1', '-m-1');
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '30');
+                  }
+                }}
+                onClick={() => {
+                  const legend = document.querySelector('[data-legend="team"]');
+                  const segment = document.querySelector('.team-segment');
+                  if (legend) {
+                    legend.classList.add('scale-105', 'bg-accent/8', 'rounded-lg', 'p-1', '-m-1');
+                    setTimeout(() => {
+                      legend.classList.remove('scale-105', 'bg-accent/8', 'rounded-lg', 'p-1', '-m-1');
+                    }, 1000);
+                  }
+                  if (segment) {
+                    segment.setAttribute('stroke-width', '35');
+                    setTimeout(() => {
+                      segment.setAttribute('stroke-width', '30');
+                    }, 1000);
+                  }
+                }}
+              >
+                <div className="w-4 h-4 rounded-full" style={{backgroundColor: '#70D0DC'}}></div>
+                <div>
+                  <div className="text-xl font-bold">15% Team & Development</div>
+                  <div className="text-sm text-base-content/70">Growth and brand development</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="text-4xl text-center pt-4 italic">Ouch, Charlie!</div>
-        <div className="text-4xl text-center pb-4 italic">That really hurt.</div>
-        <div className="flex justify-center mt-2">
-          <Image
-            src="/OuchCharlie.png"
-            alt="Charlie Baby"
-            width={600}
-            height={600}
-            className="rounded-lg w-full h-auto max-w-md"
-          />
+
+        {/* Charlie's Reaction */}
+        <div className="text-center mb-6">
+          <div className="text-3xl text-center pt-4 italic text-base-content/80">Ouch, Charlie!</div>
+          <div className="text-3xl text-center pb-4 italic text-base-content/80">That really hurt.</div>
+        </div>
+        
+        {/* Properly Scaled Ouch Charlie */}
+        <div className="flex justify-center">
+          <div className="relative max-w-sm">
+            <Image
+              src="/charlie-ouch.png"
+              alt="Charlie Baby"
+              width={400}
+              height={300}
+              className="rounded-lg w-full h-auto object-contain"
+              style={{ aspectRatio: '4/3' }}
+            />
+          </div>
         </div>
       </section>
 
@@ -249,44 +554,45 @@ export function LandingPage() {
                 <div ref={chainLogosRef} className="chain-logos-container fade-in opacity-0">
                   <div className="flex justify-center items-center">
                     <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/ETHLogo.png" alt="Ethereum" width={75} height={75} className="rounded-lg opacity-60" />
+                      <Image src="/ETHLogo.png" alt="Ethereum" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                     <a href="https://lfj.gg/avalanche/pool/v1/create" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/AvaxLogo.png" alt="Avalanche" width={75} height={75} className="rounded-lg opacity-60" />
+                      <Image src="/AvaxLogo.png" alt="Avalanche" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                     <a href="https://app.uniswap.org/positions/create/v3?currencyA=ETH&currencyB=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/ArbLogo.png" alt="Arbitrum" width={75} height={75} className="rounded-lg opacity-60" />
+                      <Image src="/ArbLogo.png" alt="Arbitrum" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                   </div>
                   
                   <div className="flex justify-center items-center mt-7">
                     <a href="https://fusionx.finance/add/MNT/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=mantle" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/MantleLogo.png" alt="Mantle" width={75} height={75} className="rounded-lg opacity-60" />
+                      <Image src="/MantleLogo.png" alt="Mantle" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                     <a href="https://aerodrome.finance/pools?token0=eth&token1=0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/BaseLogo.png" alt="Base" width={75} height={75} className="rounded-lg mx-5 opacity-60" />
+                      <Image src="/BaseLogo.png" alt="Base" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                     <a href="https://pancakeswap.finance/add/ETH/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=linea" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/LineaLogo.png" alt="Linea" width={75} height={75} className="rounded-lg opacity-60" />
+                      <Image src="/LineaLogo.png" alt="Linea" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                   </div>
                   
                   <div className="flex justify-center items-center mt-7">
                     <a href="https://app.thruster.finance/add" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/BlastLogo.png" alt="Blast" width={75} height={75} className="rounded-lg opacity-60" />
+                      <Image src="/BlastLogo.png" alt="Blast" width={75} height={75} className="rounded-lg opacity-60 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                     <a href="https://dapp.quickswap.exchange/pool/v2/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1/ETH" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/PolLogo.png" alt="Polygon" width={75} height={75} className="rounded-lg opacity-75" />
+                      <Image src="/PolLogo.png" alt="Polygon" width={75} height={75} className="rounded-lg opacity-75 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                     <a href="https://pancakeswap.finance/add/BNB/0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1?chain=bsc" target="_blank" className="mx-5" rel="noopener noreferrer">
-                      <Image src="/BNBLogo.png" alt="BNB Chain" width={75} height={75} className="rounded-lg opacity-75" />
+                      <Image src="/BNBLogo.png" alt="BNB Chain" width={75} height={75} className="rounded-lg opacity-75 hover:opacity-100 transition-opacity duration-300" />
                     </a>
                   </div>
                 </div>
                 
                 <div className="bg-base-200 p-4 rounded-lg mt-7">
                   <p className="text-base font-semibold text-center">How to provide LP:</p>
-                  <p className="text-base text-center">Click on any chain logo to visit the appropriate DEX and create an ETH-$CHAR liquidity pair.</p>
+                  <p className="text-base text-center"><strong>Step 1:</strong> Click on any chain logo above and visit their DEX</p>
+                  <p className="text-base text-center"><strong>Step 2:</strong> Create an ETH-$CHAR liquidity pair</p>
                 </div>
               </div>
             </div>
@@ -295,21 +601,12 @@ export function LandingPage() {
             <div className="roadmap-step flex flex-col items-center gap-6 fade-in" ref={step3Ref}>
               <div className="step-number flex-shrink-0 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-3xl font-bold text-primary-content">3</div>
               <div className="step-content flex-grow w-full">
-                <h3 className="text-2xl font-bold mb-2 text-center">Spread the Word & Enjoy the Ride!</h3>
-                <p className="text-lg mb-4 text-center">Share Charlie with friends, grow the community, and watch as we reach the moon together.</p>
+                <h3 className="text-2xl font-bold mb-2 text-center">Spread the Word & Follow $CHAR!</h3>
+                <p className="text-lg mb-4 text-center">Share Charlie with friends, grow the community, and follow for official announcements.</p>
                 
                 <div className="flex justify-center mt-6">
                 <div className="flex flex-col items-center max-w-xs md:max-w-sm lg:max-w-md">
-                  <Image
-                    src="/WaggingCharlie.gif"
-                    alt="Charlie Bull Wagging Tail"
-                    width={450}
-                    height={450}
-                    className="rounded-lg w-full h-auto md:w-[350px] lg:w-[400px]"
-                    unoptimized
-                  />
-                  <div className="text-center p-4">Follow Char for official announcements</div>
-
+  
                   {/* Social Media Icons */}
                   <div className="flex justify-center w-full mb-4 mt-4">
                     <div className="flex justify-between w-full max-w-[240px] md:max-w-[280px]">

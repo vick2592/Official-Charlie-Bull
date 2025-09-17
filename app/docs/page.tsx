@@ -17,7 +17,7 @@ export default function WhitepaperPage() {
             The First Cross-Chain AI Pup on Ethereum
           </p>
           <div className="mt-6">
-            <span className="badge badge-primary badge-lg">Version 1.0</span>
+            <span className="badge badge-primary badge-lg">Version 1.0.1</span>
           </div>
         </header>
         
@@ -104,7 +104,7 @@ export default function WhitepaperPage() {
                     <td>Community</td>
                     <td>35%</td>
                     <td>147,241,500,000,000</td>
-                    <td>Community Rewards & Airdrops</td>
+                    <td>Community Airdrop</td>
                   </tr>
                   <tr>
                     <td>Team & Development</td>
@@ -124,23 +124,23 @@ export default function WhitepaperPage() {
               <div className="flex items-start gap-4">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q3 2025 - Token Generation Event</h3>
+                  <h3 className="font-semibold text-lg">Start of Q4 2025 - AI Integration</h3>
+                  <p className="text-base-content/70">Launch an interactive Charlie&apos;s AI character on Telegram and BlueSky, operational before token generation event</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q4 2025 - Token Generation Event</h3>
                   <p className="text-base-content/70">Launch $CHAR token with initial liquidity on Base L2</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q3 - Q4 2025 - Cross-Chain Expansion</h3>
+                  <h3 className="font-semibold text-lg">End Q4 2025 - Cross-Chain Expansion</h3>
                   <p className="text-base-content/70">Bridge and Provide Liquidity on Arbitrum, Ethereum, 
                   Avalanche and other supported networks on Axelar.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">End Q4 2025 - AI integration</h3>
-                  <p className="text-base-content/70">Launch an interactive Charlie&apos;s AI character on Telegram and BlueSky</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">

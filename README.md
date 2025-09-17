@@ -53,4 +53,4 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 We welcome contributions to Charlie Bull!
 
-Reach out to @VickzInBK on X or @NBigOnIsig on Instagram.
+Reach out to @CharlieBullArt on X or @NBigOnIsig on Instagram.

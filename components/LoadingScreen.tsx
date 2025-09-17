@@ -1,15 +1,11 @@
 "use client";
 
-"use client";
-
 import { useState, useEffect } from "react";
 import Image from "next/legacy/image";
 
 export function LoadingScreen() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
-  // Remove the unused state variable
-  // const [fullyLoaded, setFullyLoaded] = useState(false);
 
   useEffect(() => {
     const startTime = Date.now();
@@ -18,34 +14,25 @@ export function LoadingScreen() {
     // Use const instead of let since progressInterval is never reassigned
     const progressInterval = setInterval(() => {
       setLoadingProgress(prev => {
-        // Slow down progress as it gets closer to 100%
-        const increment = prev < 70 ? Math.random() * 10 : Math.random() * 3;
+        // Smooth progress increment with slight randomness
+        const increment = prev < 80 ? Math.random() * 8 + 2 : Math.random() * 2 + 1;
         const newProgress = prev + increment;
         return newProgress > 95 ? 95 : newProgress; // Cap at 95% until everything is loaded
       });
-    }, 200);
+    }, 150); // Slightly faster updates for smoother progress
 
     // Check if all content is loaded including images and scripts
     const checkAllContentLoaded = () => {
-      // Check for images
-      const allImages = document.querySelectorAll('img');
-      const allImagesLoaded = Array.from(allImages).every((img) => {
-        if (img.complete) return true;
-        return false;
-      });
-      
-      // Check for Squid widget
-      const squidWidgetLoaded = document.querySelector('#SquidWidget iframe') !== null;
+      // Check for critical images (excluding chain logos which can load later)
+      const criticalImages = document.querySelectorAll('img[priority], img[src*="Charlie"], img[src*="Wagging"]');
+      const criticalImagesLoaded = Array.from(criticalImages).every((img) => (img as HTMLImageElement).complete);
       
       // Check if enough time has passed
       const timeElapsed = Date.now() - startTime;
       const minTimeReached = timeElapsed >= minDisplayTime;
       
-      // Set loading complete when conditions are met
-      if (allImagesLoaded && (squidWidgetLoaded || timeElapsed > 5000) && minTimeReached) {
-        // Remove this line since we removed the state variable
-        // setFullyLoaded(true);
-        
+      // Set loading complete when critical content is loaded
+      if (criticalImagesLoaded && minTimeReached) {
         setLoadingProgress(100);
         clearInterval(progressInterval);
         
@@ -87,11 +74,11 @@ export function LoadingScreen() {
     <div className={`fixed inset-0 bg-base-100 z-50 flex flex-col items-center justify-center transition-opacity duration-500 ${loadingProgress === 100 ? 'opacity-0' : 'opacity-100'}`}>
       <div className="w-64 h-64 relative mb-4">
         <Image
-          src="/PantingCharlie3.gif"
-          alt="Charlie Bull Loading"
-          layout="fill"
-          objectFit="contain"
-          priority
+          src="/charlie-wag.gif"
+          alt="Charlie Bull Wagging Tail"
+          width={450}
+          height={450}
+          className="rounded-lg w-full h-auto md:w-[350px] lg:w-[400px]"
           unoptimized
         />
       </div>
