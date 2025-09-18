@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { ChatWidget } from '@/components/ChatWidget';
 import type { Metadata } from "next";
 import { FixedThemeSwitcher } from "../components/ThemeSwitcher";
 import { ConditionalLoadingScreen } from "../components/ConditionalLoadingScreen";
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body>
         <ConditionalLoadingScreen />
         {children}
+        <ChatWidget />
         <FixedThemeSwitcher />
       </body>
     </html>
