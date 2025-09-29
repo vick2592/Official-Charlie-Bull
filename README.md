@@ -62,7 +62,7 @@ The frontend calls internal API routes which proxy to the external Charlie AI se
 - Configure the backend URL via `.env.local` (not checked into git):
 
 ```
-AI_SERVER_URL=http://3.23.64.127
+AI_SERVER_URL=<YOUR_AI_SERVER_URL>
 ```
 
 - Routes (App Router):
