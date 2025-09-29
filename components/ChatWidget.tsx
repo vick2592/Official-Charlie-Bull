@@ -297,12 +297,12 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
         <div
           ref={panelRef}
           className={[
-            'fixed z-50 flex flex-col',
+            'fixed flex flex-col z-[60] md:z-50',
             fullscreen
-              ? 'inset-x-0 bottom-16 md:bottom-20 w-full'
+              ? 'inset-x-0 bottom-0 w-full'
               : [
                   // Mobile: fill from header height down to bottom
-                  'inset-x-0 top-[var(--header-height)] bottom-16',
+                  'inset-x-0 top-[var(--header-height)] bottom-0',
                   // Desktop/Tablet: float near bottom-right with fixed height and no header offset
                   'md:bottom-20 md:inset-x-auto md:right-4 md:top-auto md:h-[560px]',
                   'w-full md:w-96 max-w-full md:max-w-[calc(100vw-2rem)]'
@@ -313,12 +313,12 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             style['--header-height'] = `${headerOffset}px`;
             if (fullscreen) {
               style.top = headerOffset;
-              style.height = `calc(100vh - ${headerOffset}px - 4rem)`;
+              style.height = `calc(100vh - ${headerOffset}px)`;
             }
             return style;
           })()}
         >
-          <div className="flex flex-col h-full overflow-hidden bg-base-100/95 md:bg-base-100 md:rounded-2xl md:shadow-xl border-t border-base-300 md:border md:border-base-300/70 backdrop-blur supports-[backdrop-filter]:bg-base-100/85">
+          <div className="relative flex flex-col h-full overflow-hidden bg-base-100/95 md:bg-base-100 md:rounded-2xl md:shadow-xl border-t border-base-300 md:border md:border-base-300/70 backdrop-blur supports-[backdrop-filter]:bg-base-100/85">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-base-300 bg-base-300/90 backdrop-blur supports-[backdrop-filter]:bg-base-300/70 md:rounded-t-2xl">
               <div className="flex items-center gap-3">
@@ -365,7 +365,13 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             )}
 
             {/* Messages area */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 text-sm bg-base-100 md:bg-base-50" role="log" aria-live="polite">
+            <div className={[
+              'flex-1 overflow-y-auto px-4 py-4 space-y-4 text-sm bg-base-100 md:bg-base-50',
+              // Reserve space for overlaid input bar at the bottom on mobile
+              'pb-32',
+              // On desktop/tablet, only reserve space in fullscreen mode; a bit more to clear the larger send button and spacing
+              fullscreen ? 'md:pb-36' : 'md:pb-4'
+            ].join(' ')} role="log" aria-live="polite">
               {messages.length === 0 && (
                 <div className="text-center opacity-70">
                   <p className="text-lg mb-2">Start a conversation!</p>
@@ -405,26 +411,59 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             </div>
 
             {/* Input */}
-            <div className="border-t border-base-300 p-3 bg-base-300/80 backdrop-blur supports-[backdrop-filter]:bg-base-300/60 md:bg-base-300/70">
-              <form onSubmit={handleSubmit} className="flex items-start gap-2">
-                <div className="flex-1">
+            {/* Background tail: matches input area's blue and extends to footer.
+                Visible: always on mobile; on desktop/tablet only when fullscreen. */}
+            <div
+              className={[
+                'absolute left-0 right-0 bottom-0 z-0',
+                'h-16',
+                // Solid color to prevent translucent lightening differences
+                'bg-base-300',
+                // Visibility rules
+                'block',
+                'md:block'
+              ].join(' ')}
+            />
+
+            <div className={[
+              'border-base-300 bg-base-300',
+              'pt-6 pb-2 md:py-3 px-3',
+              // Overlay the input above the theme button: place it slightly above bottom on mobile
+              'absolute left-0 right-0 bottom-1',
+              // On desktop/tablet, overlay only when fullscreen; otherwise keep normal flow and nudge down a bit for centering in tail
+              fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-16' : 'md:relative md:border-t md:-mb-1',
+              'z-10'
+            ].join(' ')}>
+              <form onSubmit={handleSubmit}>
+                <div className="flex items-center gap-2">
                   <input
                     aria-label="Chat input"
-                    className={`input input-bordered w-full input-sm ${remaining < 0 ? 'input-error' : ''}`}
+                    className={`input input-bordered input-sm h-9 md:h-12 flex-1 ${remaining < 0 ? 'input-error' : ''}`}
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     placeholder="Ask Charlie a DeFi question..."
                     maxLength={MAX_CHARS + 20}
                     disabled={loading || typing}
                   />
-                  <div className="flex justify-between mt-1 text-[10px] px-1">
-                    <span className={limitClass}>{remaining}/{MAX_CHARS}</span>
-                    {(loading || typing) && <span className="opacity-70">Processing...</span>}
-                  </div>
+                  <button
+                    type="submit"
+                    aria-label="Send"
+                    disabled={disabledSend}
+                    className={[
+                      'btn btn-primary btn-sm h-9 w-9 min-h-0 p-0 mt-0 flex items-center justify-center',
+                      // Desktop/tablet: always use larger size for clearer alignment
+                      'md:btn-md md:h-12 md:w-12'
+                    ].join(' ')}
+                  >
+                    {loading
+                      ? <Loader className="animate-spin w-4 h-4 md:w-8 md:h-8" />
+                      : <Send className="w-4 h-4 md:w-8 md:h-8" />}
+                  </button>
                 </div>
-                <button type="submit" aria-label="Send" disabled={disabledSend} className="btn btn-primary btn-sm h-9 w-9 min-h-0 p-0 mt-[1px] flex items-center justify-center">
-                  {loading ? <Loader className="animate-spin" size={16}/> : <Send size={16} />}
-                </button>
+                <div className="flex justify-between mt-1 text-[10px] px-1">
+                  <span className={limitClass}>{remaining}/{MAX_CHARS}</span>
+                  {(loading || typing) && <span className="opacity-70">Processing...</span>}
+                </div>
               </form>
             </div>
           </div>

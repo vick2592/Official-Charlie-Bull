@@ -1,6 +1,6 @@
 export const runtime = 'nodejs';
 
-export async function POST(req: Request) {
+export async function GET() {
   const base = process.env.AI_SERVER_URL?.replace(/\/$/, '');
   if (!base) {
     return new Response(JSON.stringify({ error: 'misconfigured', message: 'AI_SERVER_URL not set' }), {
@@ -8,17 +8,11 @@ export async function POST(req: Request) {
       headers: { 'content-type': 'application/json' }
     });
   }
-  const upstream = `${base}/v1/chat`;
-  const body = await req.text(); // pass through as-is
+  const upstream = `${base}/healthz`;
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
+  const timeout = setTimeout(() => controller.abort(), 10000);
   try {
-    const r = await fetch(upstream, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body,
-      signal: controller.signal
-    });
+    const r = await fetch(upstream, { signal: controller.signal });
     const text = await r.text().catch(() => '');
     return new Response(text, {
       status: r.status,
@@ -35,4 +29,3 @@ export async function POST(req: Request) {
     clearTimeout(timeout);
   }
 }
-

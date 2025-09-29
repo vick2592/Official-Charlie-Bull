@@ -54,3 +54,22 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 We welcome contributions to Charlie Bull!
 
 Reach out to @CharlieBullArt on X or @NBigOnIsig on Instagram.
+
+## AI Server Proxy
+
+The frontend calls internal API routes which proxy to the external Charlie AI server.
+
+- Configure the backend URL via `.env.local` (not checked into git):
+
+```
+AI_SERVER_URL=http://3.23.64.127
+```
+
+- Routes (App Router):
+  - `GET /api/healthz` → proxies to `${AI_SERVER_URL}/healthz`
+  - `POST /api/chat` → proxies to `${AI_SERVER_URL}/v1/chat`
+
+Notes:
+- We preserve upstream status codes and return `application/json`.
+- Timeouts: 10s for health, 15s for chat.
+- Do not prefix with `NEXT_PUBLIC_`; the URL stays server-side only.
