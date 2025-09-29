@@ -1,13 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
+declare global {
+  interface Window { __CHARLIE_SITE_LOADED__?: boolean }
+}
 import Image from "next/legacy/image";
 
 export function LoadingScreen() {
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  interface CharlieGlobal extends Global {
+    __charlieLoadRef?: { current: boolean }
+  }
+  const g = globalThis as unknown as CharlieGlobal;
+  if (!g.__charlieLoadRef) g.__charlieLoadRef = { current: false };
+  const completedRef = g.__charlieLoadRef;
 
   useEffect(() => {
+    // If already loaded previously, do not show or modify scroll
+    if (window.__CHARLIE_SITE_LOADED__) {
+      setIsComplete(true);
+      return;
+    }
     const startTime = Date.now();
     const minDisplayTime = 2500; // Minimum 2.5 seconds display time
     
@@ -32,14 +47,18 @@ export function LoadingScreen() {
       const minTimeReached = timeElapsed >= minDisplayTime;
       
       // Set loading complete when critical content is loaded
-      if (criticalImagesLoaded && minTimeReached) {
+      if (criticalImagesLoaded && minTimeReached && !completedRef.current) {
+        completedRef.current = true;
         setLoadingProgress(100);
         clearInterval(progressInterval);
-        
         // Add a short delay for smooth transition
         setTimeout(() => {
+          window.__CHARLIE_SITE_LOADED__ = true;
           setIsComplete(true);
-        }, 500);
+          document.body.style.overflow = '';
+          // Do NOT force scroll position; preserve user's scroll if they moved.
+          document.dispatchEvent(new CustomEvent('charlie:siteLoaded'));
+        }, 400);
       } else {
         // Check again after a short delay
         setTimeout(checkAllContentLoaded, 300);
@@ -57,16 +76,44 @@ export function LoadingScreen() {
 
     // Safety timeout - eventually hide loading screen even if something fails to load
     const safetyTimeout = setTimeout(() => {
+      if (completedRef.current) return;
       console.log("Safety timeout triggered for loading screen");
+      completedRef.current = true;
       setLoadingProgress(100);
-      setTimeout(() => setIsComplete(true), 500);
+      setTimeout(() => {
+        window.__CHARLIE_SITE_LOADED__ = true;
+        setIsComplete(true);
+        document.body.style.overflow = '';
+        document.dispatchEvent(new CustomEvent('charlie:siteLoaded'));
+      }, 300);
     }, 10000); // 10 seconds maximum
+
+    // lock scroll while loading but unlock if user attempts to scroll (for better UX)
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const earlyScrollUnlock = () => {
+      if (!completedRef.current) {
+        document.body.style.overflow = prevOverflow;
+      }
+      window.removeEventListener('wheel', earlyScrollUnlock);
+      window.removeEventListener('touchmove', earlyScrollUnlock);
+    };
+    window.addEventListener('wheel', earlyScrollUnlock, { passive: true });
+    window.addEventListener('touchmove', earlyScrollUnlock, { passive: true });
 
     return () => {
         clearInterval(progressInterval);
         clearTimeout(safetyTimeout);
+            // Only restore if still locked (in case completion already restored it)
+            if (document.body.style.overflow === 'hidden') {
+              document.body.style.overflow = prevOverflow;
+            }
+            window.removeEventListener('wheel', earlyScrollUnlock);
+            window.removeEventListener('touchmove', earlyScrollUnlock);
         };
-    }, []);
+  // We intentionally want this effect only once (mount). completedRef is stable via global stash.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isComplete) return null;
 
