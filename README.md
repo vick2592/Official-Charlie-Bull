@@ -1,7 +1,7 @@
 # 🐶 Charlie Bull
 
 <h4 align="center">
-  <a href="https://scaffoldeth.io">Website</a>
+  <a href="https://charliebull.art">Website</a>
 </h4>
 
 🦮 Welcome to Charlie Bull, the most lovable meme coin on the Ethereum blockchain! Charlie Bull is here to bring joy and fun to the world of decentralized applications (dapps). With Charlie Bull, you can easily take apart of our awesome community and swap any of your tokens on any EVM chain within our awesome network.
