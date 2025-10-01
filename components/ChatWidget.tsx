@@ -346,12 +346,12 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
           className={[
             'fixed flex flex-col z-[60] md:z-50',
             fullscreen
-              ? 'inset-x-0 bottom-0 w-full'
+              ? 'inset-0 w-full'
               : [
-                  // Mobile: fill from header height down to bottom
-                  'inset-x-0 top-[var(--header-height)] bottom-0',
-                  // Desktop/Tablet: float near bottom-right with fixed height and no header offset
-                  'md:bottom-20 md:inset-x-auto md:right-4 md:top-auto md:h-[560px]',
+                  // Mobile: truly fullscreen overlay
+                  'inset-0',
+                  // Desktop/Tablet: float near bottom-right with fixed height
+                  'md:bottom-20 md:inset-x-auto md:right-4 md:top-auto md:left-auto md:h-[560px]',
                   'w-full md:w-96 max-w-full md:max-w-[calc(100vw-2rem)]'
                 ].join(' ')
           ].join(' ')}
@@ -365,9 +365,9 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             return style;
           })()}
         >
-          <div className="relative flex flex-col h-full overflow-hidden bg-base-100/95 md:bg-base-100 md:rounded-2xl md:shadow-xl border-t border-base-300 md:border md:border-base-300/70 backdrop-blur supports-[backdrop-filter]:bg-base-100/85">
+          <div className="relative flex flex-col h-full overflow-hidden bg-base-100 md:bg-base-100 md:rounded-2xl md:shadow-xl border-t border-base-300 md:border md:border-base-300/70 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-100/85">
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-base-300 bg-base-300/90 backdrop-blur supports-[backdrop-filter]:bg-base-300/70 md:rounded-t-2xl">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-base-300 bg-base-300 md:bg-base-300/90 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-300/70 md:rounded-t-2xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 flex items-center justify-center overflow-hidden p-1 ring-1 ring-base-300">
                   <Image src="/charlie-bull.png" alt="Charlie Bull" width={40} height={40} className="w-full h-full object-contain drop-shadow" />
@@ -413,7 +413,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
             {/* Messages area */}
             <div className={[
-              'flex-1 overflow-y-auto px-4 py-4 space-y-4 text-sm bg-base-100 md:bg-base-50',
+              'flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 text-sm bg-base-100 md:bg-base-50',
               // Reserve space for overlaid input bar at the bottom on mobile
               'pb-32',
               // On desktop/tablet, only reserve space in fullscreen mode; a bit more to clear the larger send button and spacing
@@ -480,7 +480,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               // On desktop/tablet, overlay only when fullscreen; otherwise keep normal flow and nudge down a bit for centering in tail
               fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-16' : 'md:relative md:border-t md:-mb-1',
               'z-10'
-            ].join(' ')} style={{ bottom: Math.max(1, kbInset ? kbInset + 4 : 1) }}>
+            ].join(' ')} style={{ bottom: `calc(${Math.max(1, kbInset)}px + env(safe-area-inset-bottom))` }}>
               <form onSubmit={handleSubmit}>
                 <div className="flex items-center gap-2">
                   <input

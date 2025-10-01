@@ -21,8 +21,8 @@ body {
 /* Lock page scroll when applied (used when chat is open on mobile) */
 .no-scroll {
   overflow: hidden !important;
-  height: 100dvh;
-  overscroll-behavior: none;
+  overscroll-behavior: contain;
+  touch-action: none;
 }
 
 @layer utilities {
