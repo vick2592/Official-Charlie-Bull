@@ -52,6 +52,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const [settings, setSettings] = useState<SettingsState>({ sound: false, persist: true });
   const [showSettings, setShowSettings] = useState(false);
   const [fullscreen, setFullscreen] = useState(false); // desktop fullscreen toggle
+  const [initialVH, setInitialVH] = useState<number | null>(null); // lock mobile overlay height
 
   // Refs
   const endRef = useRef<HTMLDivElement>(null);
@@ -116,6 +117,17 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     window.addEventListener('resize', computeHeader);
     return () => window.removeEventListener('resize', computeHeader);
   }, []);
+
+  // Cache initial viewport height on first open to stabilize iOS size when keyboard appears
+  useEffect(() => {
+    if (!open) return;
+    if (initialVH == null) {
+      // Prefer visualViewport if available, fallback to innerHeight
+      const vv = window.visualViewport;
+      const vh = vv ? Math.round(vv.height) : window.innerHeight;
+      setInitialVH(vh);
+    }
+  }, [open, initialVH]);
 
   useEffect(() => {
     try {
@@ -361,6 +373,13 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             if (fullscreen) {
               style.top = headerOffset;
               style.height = `calc(100dvh - ${headerOffset}px)`;
+            } else {
+              // Mobile overlay: lock height to initial viewport to avoid jump on keyboard
+              if (!window.matchMedia('(min-width: 768px)').matches) {
+                const vh = initialVH ?? window.innerHeight;
+                style.height = `${vh}px`;
+                style.top = 0;
+              }
             }
             return style;
           })()}
@@ -412,7 +431,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             )}
 
             {/* Messages area */}
-            <div className={[
+            <div className={[ 
               'flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 text-sm bg-base-100 md:bg-base-50',
               // Reserve space for overlaid input bar at the bottom on mobile
               'pb-32',
