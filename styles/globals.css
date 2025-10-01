@@ -22,8 +22,7 @@ body {
 .no-scroll {
   overflow: hidden !important;
   height: 100dvh;
-  position: fixed;
-  width: 100%;
+  overscroll-behavior: none;
 }
 
 @layer utilities {

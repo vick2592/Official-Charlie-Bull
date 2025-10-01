@@ -58,6 +58,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(`sess_${Date.now()}_${Math.random().toString(36).slice(2,10)}`);
   const scrollPosRef = useRef(0); // preserve scroll position to prevent jump
+  const [kbInset, setKbInset] = useState(0); // keyboard inset compensation on iOS
 
   // Helper open/close functions that preserve scroll position
   const openChat = useCallback(() => {
@@ -180,6 +181,27 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
   useEffect(() => { scrollBottom(); }, [messages, typing, scrollBottom]);
+
+
+  // Handle iOS keyboard visual viewport changes to avoid full-page reflow/reset on Safari
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isMob = !window.matchMedia('(min-width: 768px)').matches;
+    const vv = window.visualViewport;
+    if (!isMob || !vv) return;
+    const onResize = () => {
+      // When keyboard opens, visualViewport height shrinks; compute bottom inset
+      const inset = Math.max(0, (window.innerHeight - vv.height - (vv.offsetTop || 0)));
+      setKbInset(inset);
+    };
+    vv.addEventListener('resize', onResize);
+    vv.addEventListener('scroll', onResize);
+    onResize();
+    return () => {
+      vv.removeEventListener('resize', onResize);
+      vv.removeEventListener('scroll', onResize);
+    };
+  }, []);
 
   // Close when tapping outside on mobile (only if not fullscreen desktop mode)
   useEffect(() => {
@@ -454,11 +476,11 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               'border-base-300 bg-base-300',
               'pt-6 pb-2 md:py-3 px-3',
               // Overlay the input above the theme button: place it slightly above bottom on mobile
-              'absolute left-0 right-0 bottom-1',
+              'absolute left-0 right-0',
               // On desktop/tablet, overlay only when fullscreen; otherwise keep normal flow and nudge down a bit for centering in tail
               fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-16' : 'md:relative md:border-t md:-mb-1',
               'z-10'
-            ].join(' ')}>
+            ].join(' ')} style={{ bottom: Math.max(1, kbInset ? kbInset + 4 : 1) }}>
               <form onSubmit={handleSubmit}>
                 <div className="flex items-center gap-2">
                   <input
