@@ -71,7 +71,32 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     requestAnimationFrame(() => {
       window.scrollTo({ top: y });
     });
+    if (!window.matchMedia('(min-width: 768px)').matches) {
+      document.body.classList.remove('no-scroll');
+    }
   }, []);
+
+  // Keep scroll lock in sync with viewport changes while chat is open
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const apply = () => {
+      if (!open) {
+        document.body.classList.remove('no-scroll');
+        return;
+      }
+      if (mq.matches) {
+        // Desktop/tablet: lock page only when chat is fullscreen
+        if (fullscreen) document.body.classList.add('no-scroll');
+        else document.body.classList.remove('no-scroll');
+      } else {
+        // Mobile: always lock while open
+        document.body.classList.add('no-scroll');
+      }
+    };
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, [open, fullscreen]);
 
   // ---- Effects: load persisted ----
   useEffect(() => {
@@ -313,7 +338,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             style['--header-height'] = `${headerOffset}px`;
             if (fullscreen) {
               style.top = headerOffset;
-              style.height = `calc(100vh - ${headerOffset}px)`;
+              style.height = `calc(100dvh - ${headerOffset}px)`;
             }
             return style;
           })()}

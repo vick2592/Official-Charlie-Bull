@@ -192,7 +192,7 @@ export function LandingPage() {
             
             {/* Pie Chart */}
             <div className="relative w-80 h-80">
-              <svg className="w-full h-full transform -rotate-90 transition-all duration-300" viewBox="0 0 200 200">
+              <svg className="w-full h-full transform -rotate-90 transition-all duration-300" viewBox="0 0 200 200" aria-label="Tokenomics chart">
                 {/* Background circle */}
                 <circle
                   cx="100"
@@ -246,19 +246,20 @@ export function LandingPage() {
                   style={{ strokeLinecap: 'round' }}
                 />
                 
-                {/* Center Charlie Token - Smaller Again */}
-                <foreignObject x="45" y="45" width="110" height="110">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Image
-                      src="/token-main.svg"
-                      alt="Charlie Token"
-                      width={90}
-                      height={90}
-                      className="animate-spin-slow hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                </foreignObject>
+                {/* Center token image overlay is positioned outside the SVG for Safari compatibility */}
               </svg>
+
+              {/* Absolutely centered overlay for the spinning token (avoids SVG foreignObject on iOS Safari) */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <Image
+                  src="/token-main.svg"
+                  alt="Charlie Token"
+                  width={130}
+                  height={130}
+                  className="animate-spin-slow hover:scale-110 transition-transform duration-300"
+                  priority
+                />
+              </div>
               
               {/* Separate hoverable elements for each segment - CORRECTED POSITIONS */}
               <div className="absolute inset-0">

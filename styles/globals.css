@@ -7,13 +7,23 @@
 
 html {
   scroll-behavior: smooth;
+  /* Custom vh unit fallback for iOS Safari if needed */
+  --vh: 1vh;
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Lock page scroll when applied (used when chat is open on mobile) */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100dvh;
+  position: fixed;
+  width: 100%;
 }
 
 @layer utilities {
