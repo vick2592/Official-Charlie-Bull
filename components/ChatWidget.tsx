@@ -589,7 +589,7 @@ export function ChatWidget({}: ChatWidgetProps) {
                     <div className={`rounded-xl px-3 py-2 ${m.sender==='user' ? 'bg-primary text-primary-content ml-1 shadow-sm' : legacy ? 'bg-base-200 text-base-content mr-1' : 'bg-base-50 text-base-content mr-1 border border-base-300 shadow-sm'} transition-colors`}>
                       {m.sender==='charlie' && (
                         legacy ? (
-                          <div className="text-[10px] uppercase tracking-wide opacity-70 font-semibold mb-1">C</div>
+                          <div className="text-[10px] uppercase tracking-wide opacity-70 font-semibold mb-1">CHAR</div>
                         ) : (
                           <div className="flex items-center gap-2 mb-1"><span className="inline-block w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 p-[1px] ring-1 ring-base-300"><Image src="/charlie-bull.png" alt="Charlie Bull" width={20} height={20} className="w-full h-full object-contain" /></span><span className="text-[10px] uppercase tracking-wide opacity-70 font-semibold">CHAR</span></div>
                         )

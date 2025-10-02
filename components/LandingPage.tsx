@@ -165,7 +165,7 @@ export function LandingPage() {
           
           <div className="flex justify-center items-center mt-4">
             <div className="flex flex-col justify-center items-center text-center">
-              <p className="text-xl font-semibold mb-3">$CHAR Token address:</p>
+              <p className="text-xl font-semibold mb-3"><span className="font-creambeige">$CHAR</span> Token address:</p>
               <TokenAddress address="0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" />
               {/* <p className="text-sm text-base-content/70 mt-2">(Click to copy)</p> */}
             </div>
