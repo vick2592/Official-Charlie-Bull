@@ -222,11 +222,13 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       console.log('Init load error', e);
     }
 
-    // Skip welcome modal entirely on /chat (lighter UX) or if explicitly disabled
-    if (!showInitialModal || pathname === '/chat') return;
+    // Skip welcome modal entirely on /chat (lighter UX), if explicitly disabled, or on legacy iPhones
+    if (!showInitialModal || pathname === '/chat' || lowEndIOS) return;
 
     const maybeShow = () => {
       try {
+        // Double-guard: never show welcome modal on legacy iPhones
+        if (lowEndIOS) return;
         const seen = localStorage.getItem(STORAGE.WELCOME);
         if (!seen) {
           setTimeout(() => setShowWelcome(true), 250); // slight delay after load fade
@@ -255,7 +257,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
         clearTimeout(fallbackTimer);
       };
     }
-  }, [showInitialModal, pathname, standalone, legacy]);
+  }, [showInitialModal, pathname, standalone, legacy, lowEndIOS]);
 
   // Persist messages (skip in legacy mode entirely)
   useEffect(() => {
@@ -423,7 +425,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   return (
     <>
-      {showWelcome && (
+      {showWelcome && !lowEndIOS && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-base-100 border border-primary/30 rounded-2xl w-full max-w-md p-6 shadow-xl">
             <div className="text-center">
