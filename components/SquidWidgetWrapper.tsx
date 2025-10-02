@@ -11,7 +11,6 @@ const SquidWidget = dynamic(
 );
 
 export function SquidWidgetWrapper() {
-
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -131,7 +130,7 @@ export function SquidWidgetWrapper() {
     degenMode: true,
   };
    // Don't render anything until we're in the browser
-   if (!mounted) {
+  if (!mounted) {
     return <div className="min-h-[400px] flex items-center justify-center">Loading widget...</div>;
   }
   return (

@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { X, MessageCircle, Send, Volume2, VolumeX, Trash2, Settings, Loader, Maximize2, Minimize2 } from 'lucide-react';
 
@@ -38,6 +39,8 @@ declare global {
 }
 
 export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   // UI state
   const [open, setOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -58,12 +61,26 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(`sess_${Date.now()}_${Math.random().toString(36).slice(2,10)}`);
   const scrollPosRef = useRef(0); // preserve scroll position to prevent jump
+  const autoOpenedFromRouteRef = useRef(false);
 
   // Helper open/close functions that preserve scroll position
   const openChat = useCallback(() => {
+    // Heuristic detect older iOS to reduce crash risk by routing to a dedicated page
+    try {
+      const ua = navigator.userAgent || '';
+      const isIOS = /(iPhone|iPad|iPod)/i.test(ua);
+      const m = ua.match(/OS (\d+)_/);
+      const major = m ? parseInt(m[1], 10) : undefined;
+      const smallScreen = Math.min(window.screen.width, window.screen.height) <= 375;
+      const lowEnd = isIOS && ((typeof major === 'number' && major <= 14) || smallScreen);
+      if (lowEnd && pathname !== '/chat') {
+        router.push('/chat');
+        return;
+      }
+    } catch {}
     scrollPosRef.current = window.scrollY;
     setOpen(true);
-  }, []);
+  }, [pathname, router]);
   const closeChat = useCallback(() => {
     const y = scrollPosRef.current;
     setOpen(false);
@@ -100,6 +117,17 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   // ---- Effects: load persisted ----
   useEffect(() => {
+    // Auto-open when landing directly on /chat route and mark as route-driven
+    if (typeof window !== 'undefined' && pathname === '/chat') {
+      setOpen(true);
+      (autoOpenedFromRouteRef.current = true);
+    } else {
+      // If we navigate away from /chat and the widget was opened by the route, close it
+      if (autoOpenedFromRouteRef.current) {
+        autoOpenedFromRouteRef.current = false;
+        setOpen(false);
+      }
+    }
     // Determine header height (if header component exists) and set CSS var fallback
     const computeHeader = () => {
       const header = document.querySelector('.header');
@@ -114,7 +142,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     computeHeader();
     window.addEventListener('resize', computeHeader);
     return () => window.removeEventListener('resize', computeHeader);
-  }, []);
+  }, [pathname]);
 
   // (Removed initial viewport height lock; relying on 100dvh and input font-size fix instead)
 
@@ -212,11 +240,10 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const playSound = useCallback(() => {
     if (!settings.sound) return;
     try {
-  interface AudioWindow extends Window { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext }
-  const w = window as AudioWindow;
-  const AudioCtor = w.AudioContext || w.webkitAudioContext;
-  if (!AudioCtor) return; // environment without audio
-  const ctx: AudioContext = new AudioCtor();
+      const w = window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
+      const AudioCtor = w.AudioContext || w.webkitAudioContext;
+      if (!AudioCtor) return;
+      const ctx: AudioContext = new AudioCtor();
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
@@ -365,7 +392,21 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
                 <button aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} onClick={() => setFullscreen(f => !f)} className="btn btn-ghost btn-sm btn-circle hidden md:inline-flex">
                   {fullscreen ? <Minimize2 size={16}/> : <Maximize2 size={16}/>}
                 </button>
-                <button aria-label="Close" onClick={() => { closeChat(); setFullscreen(false); }} className="btn btn-ghost btn-sm btn-circle"><X size={16} /></button>
+                <button
+                  aria-label="Close"
+                  onClick={() => {
+                    if (pathname === '/chat') {
+                      setFullscreen(false);
+                      router.push('/'); // client-side nav avoids the loading screen
+                    } else {
+                      closeChat();
+                      setFullscreen(false);
+                    }
+                  }}
+                  className="btn btn-ghost btn-sm btn-circle"
+                >
+                  <X size={16} />
+                </button>
               </div>
             </div>
 
