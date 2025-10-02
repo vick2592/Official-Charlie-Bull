@@ -68,6 +68,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   // Derived: standalone lightweight mode for older iPhones on /chat
   const standalone = pathname === '/chat' && lowEndIOS;
+  const legacy = standalone; // alias for readability
 
   // Detect low-end iOS once on mount
   useEffect(() => {
@@ -214,7 +215,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
         const parsed = JSON.parse(m);
         if (Array.isArray(parsed)) setMessages(() => {
           const next = parsed as ChatMessage[];
-          return standalone ? next.slice(-40) : next;
+          return legacy ? next.slice(-20) : next;
         });
       }
     } catch (e) {
@@ -254,17 +255,18 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
         clearTimeout(fallbackTimer);
       };
     }
-  }, [showInitialModal, pathname, standalone]);
+  }, [showInitialModal, pathname, standalone, legacy]);
 
-  // Persist messages
+  // Persist messages (skip in legacy mode entirely)
   useEffect(() => {
+    if (legacy) return;
     if (settings.persist) {
       try {
-        const toStore = standalone ? messages.slice(-40) : messages;
+        const toStore = messages;
         localStorage.setItem(STORAGE.MESSAGES, JSON.stringify(toStore));
       } catch {}
     }
-  }, [messages, settings.persist, standalone]);
+  }, [messages, settings.persist, legacy]);
 
   // Persist settings
   useEffect(() => {
@@ -335,7 +337,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       setMessages((m: ChatMessage[]) => {
         const rateMsg: ChatMessage = { id: 'rate_'+now, content: withDog(`Please wait a moment before sending another question.`), sender: 'charlie', timestamp: now };
         const next: ChatMessage[] = [...m, rateMsg];
-        return standalone ? next.slice(-40) : next;
+        return legacy ? next.slice(-20) : next;
       });
       return;
     }
@@ -343,7 +345,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       setMessages((m: ChatMessage[]) => {
         const lenMsg: ChatMessage = { id: 'len_'+now, content: withDog(`That message is too long. Keep it under ${MAX_CHARS} characters.`), sender: 'charlie', timestamp: now };
         const next: ChatMessage[] = [...m, lenMsg];
-        return standalone ? next.slice(-40) : next;
+        return legacy ? next.slice(-20) : next;
       });
       return;
     }
@@ -351,12 +353,12 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     const userMsg: ChatMessage = { id: 'u_'+now, content: trimmed, sender: 'user', timestamp: now };
     setMessages((m: ChatMessage[]) => {
       const next: ChatMessage[] = [...m, userMsg];
-      return standalone ? next.slice(-40) : next;
+      return legacy ? next.slice(-20) : next;
     });
     setInput('');
     setLastSentAt(now);
     setLoading(true);
-    setTyping(true);
+    if (!legacy) setTyping(true);
 
     try {
       const res = await fetch('/api/chat', {
@@ -365,25 +367,34 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
         body: JSON.stringify({ message: trimmed, sessionId: sessionIdRef.current })
       });
       const data = await res.json();
-      // Simulate natural typing delay 0.8 - 1.8s
-      const delay = 800 + Math.random()*1000;
-      setTimeout(() => {
-        setTyping(false);
-        const charMsg: ChatMessage = { id: 'c_'+Date.now(), content: withDog(data.message || 'Woof! Something went odd.'), sender: 'charlie', timestamp: Date.now() };
+      const charMsg: ChatMessage = { id: 'c_'+Date.now(), content: withDog(data.message || 'Woof! Something went odd.'), sender: 'charlie', timestamp: Date.now() };
+      if (!legacy) {
+        // non-legacy: natural delay and typing feedback
+        const delay = 800 + Math.random()*1000;
+        setTimeout(() => {
+          setTyping(false);
+          setMessages((m: ChatMessage[]) => {
+            const next: ChatMessage[] = [...m, charMsg];
+            return next;
+          });
+          playSound();
+          setLoading(false);
+        }, delay);
+      } else {
+        // legacy: immediate response, no sound/typing
         setMessages((m: ChatMessage[]) => {
           const next: ChatMessage[] = [...m, charMsg];
-          return standalone ? next.slice(-40) : next;
+          return next.slice(-20);
         });
-        playSound();
         setLoading(false);
-      }, delay);
+      }
   } catch {
-      setTyping(false);
+      if (!legacy) setTyping(false);
       setLoading(false);
       setMessages((m: ChatMessage[]) => {
         const errMsg: ChatMessage = { id: 'err_'+Date.now(), content: withDog('Woof! Network hiccup—try again shortly.'), sender: 'charlie', timestamp: Date.now() };
         const next: ChatMessage[] = [...m, errMsg];
-        return standalone ? next.slice(-40) : next;
+        return legacy ? next.slice(-20) : next;
       });
     }
   };
@@ -478,16 +489,20 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               standalone ? 'bg-base-200' : 'bg-base-300 md:bg-base-300/90 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-300/70 md:rounded-t-2xl'
             ].join(' ')}>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 flex items-center justify-center overflow-hidden p-1 ring-1 ring-base-300">
-                  <Image src="/charlie-bull.png" alt="Charlie Bull" width={40} height={40} className="w-full h-full object-contain drop-shadow" />
-                </div>
+                {legacy ? (
+                  <div className="w-8 h-8 rounded-lg bg-base-300 flex items-center justify-center text-xs font-bold">C</div>
+                ) : (
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 flex items-center justify-center overflow-hidden p-1 ring-1 ring-base-300">
+                    <Image src="/charlie-bull.png" alt="Charlie Bull" width={40} height={40} className="w-full h-full object-contain drop-shadow" />
+                  </div>
+                )}
                 <div>
                   <p className="font-creambeige font-bold leading-tight text-lg tracking-wide">Charlie</p>
-                  <p className="text-[11px] opacity-60 font-medium">AI DeFi Assistant</p>
+                  {!legacy && <p className="text-[11px] opacity-60 font-medium">AI DeFi Assistant</p>}
                 </div>
               </div>
               <div className="flex items-center gap-1">
-                <button aria-label="Settings" onClick={() => setShowSettings(s => !s)} className="btn btn-ghost btn-sm btn-circle"><Settings size={16} /></button>
+                {!legacy && <button aria-label="Settings" onClick={() => setShowSettings(s => !s)} className="btn btn-ghost btn-sm btn-circle"><Settings size={16} /></button>}
                 {!standalone && (
                 <button aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} onClick={() => setFullscreen(f => !f)} className="btn btn-ghost btn-sm btn-circle hidden md:inline-flex">
                   {fullscreen ? <Minimize2 size={16}/> : <Maximize2 size={16}/>}
@@ -511,7 +526,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               </div>
             </div>
 
-            {showSettings && (
+            {showSettings && !legacy && (
               <div className="px-4 py-3 border-b border-base-300 bg-base-200 text-sm space-y-3">
                 <div className="flex items-center justify-between">
                   <span>Sound notifications</span>
@@ -554,7 +569,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               standalone ? 'pb-4' : 'pb-32',
               !standalone && (fullscreen ? 'md:pb-36' : 'md:pb-4')
             ].filter(Boolean).join(' ')} role="log" aria-live="polite">
-              {messages.length === 0 && (
+              {messages.length === 0 && !legacy && (
                 <div className="text-center opacity-70">
                   <p className="text-lg mb-2">Start a conversation!</p>
                   <div className="grid grid-cols-2 gap-2 mt-4">
@@ -568,15 +583,21 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               {messages.map(m => (
                 <div key={m.id} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[78%] ${m.sender==='user' ? 'order-2' : 'order-1'}`}>
-                    <div className={`rounded-xl px-3 py-2 ${m.sender==='user' ? 'bg-primary text-primary-content ml-1 shadow-sm' : 'bg-base-50 text-base-content mr-1 border border-base-300 shadow-sm'} transition-colors`}>
-                      {m.sender==='charlie' && <div className="flex items-center gap-2 mb-1"><span className="inline-block w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 p-[1px] ring-1 ring-base-300"><Image src="/charlie-bull.png" alt="Charlie Bull" width={20} height={20} className="w-full h-full object-contain" /></span><span className="text-[10px] uppercase tracking-wide opacity-70 font-semibold">CHAR</span></div>}
+                    <div className={`rounded-xl px-3 py-2 ${m.sender==='user' ? 'bg-primary text-primary-content ml-1 shadow-sm' : legacy ? 'bg-base-200 text-base-content mr-1' : 'bg-base-50 text-base-content mr-1 border border-base-300 shadow-sm'} transition-colors`}>
+                      {m.sender==='charlie' && (
+                        legacy ? (
+                          <div className="text-[10px] uppercase tracking-wide opacity-70 font-semibold mb-1">C</div>
+                        ) : (
+                          <div className="flex items-center gap-2 mb-1"><span className="inline-block w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 p-[1px] ring-1 ring-base-300"><Image src="/charlie-bull.png" alt="Charlie Bull" width={20} height={20} className="w-full h-full object-contain" /></span><span className="text-[10px] uppercase tracking-wide opacity-70 font-semibold">CHAR</span></div>
+                        )
+                      )}
                       <p className="whitespace-pre-wrap leading-snug">{m.content}</p>
-                      <span className="block text-[10px] mt-1 opacity-50">{new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      {!legacy && <span className="block text-[10px] mt-1 opacity-50">{new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
                     </div>
                   </div>
                 </div>
               ))}
-              {typing && (
+              {typing && !legacy && (
                 <div className="flex justify-start">
                   <div className="bg-base-50 text-base-content border border-base-300 rounded-xl px-3 py-2 mr-1 max-w-[60%] shadow-sm">
                     <div className="flex items-center gap-2 mb-1"><span className="inline-block w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 p-[1px] ring-1 ring-base-300"><Image src="/charlie-bull.png" alt="Charlie Bull" width={20} height={20} className="w-full h-full object-contain" /></span><span className="text-[10px] uppercase tracking-wide opacity-70 font-semibold">CHAR</span></div>
