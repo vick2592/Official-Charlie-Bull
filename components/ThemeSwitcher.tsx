@@ -1,26 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from 'next/navigation';
 
 export function FixedThemeSwitcher() {
   const [theme, setTheme] = useState("dark");
+  const [hidden, setHidden] = useState(false);
+  const pathname = usePathname();
 
+  // Initialize theme once
   useEffect(() => {
-    // Check local storage for saved theme on component mount
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    setTheme(savedTheme);
-    document.documentElement.setAttribute("data-theme", savedTheme);
+    try {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    } catch {}
   }, []);
+
+  // Hide when chat opens or when on /chat
+  useEffect(() => {
+    const onOpenChange = (e: Event) => {
+      try {
+        const detail = (e as CustomEvent).detail as { open?: boolean } | undefined;
+        if (typeof detail?.open === 'boolean') {
+          setHidden(Boolean(detail.open) || pathname === '/chat');
+        }
+      } catch {}
+    };
+    document.addEventListener('charlie:chatOpenChange', onOpenChange as EventListener);
+    // Initialize on mount and on route change
+    setHidden(pathname === '/chat' || document.body.classList.contains('chat-open'));
+    return () => {
+      document.removeEventListener('charlie:chatOpenChange', onOpenChange as EventListener);
+    };
+  }, [pathname]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
+    try {
+      localStorage.setItem("theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+    } catch {}
   };
 
+  if (hidden) return null;
+
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-40">
       <button 
         onClick={toggleTheme}
         className="btn btn-circle btn-sm md:btn-md bg-base-200 hover:bg-base-300 shadow-lg"

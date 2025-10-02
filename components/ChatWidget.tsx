@@ -43,6 +43,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const pathname = usePathname();
   // UI state
   const [open, setOpen] = useState(false);
+  const [lowEndIOS, setLowEndIOS] = useState(false); // detect once and reuse
   const [showWelcome, setShowWelcome] = useState(false);
   const [typing, setTyping] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -55,13 +56,53 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const [settings, setSettings] = useState<SettingsState>({ sound: false, persist: true });
   const [showSettings, setShowSettings] = useState(false);
   const [fullscreen, setFullscreen] = useState(false); // desktop fullscreen toggle
+  const [theme, setTheme] = useState<'dark'|'light'>('dark');
 
   // Refs
   const endRef = useRef<HTMLDivElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(`sess_${Date.now()}_${Math.random().toString(36).slice(2,10)}`);
   const scrollPosRef = useRef(0); // preserve scroll position to prevent jump
   const autoOpenedFromRouteRef = useRef(false);
+
+  // Derived: standalone lightweight mode for older iPhones on /chat
+  const standalone = pathname === '/chat' && lowEndIOS;
+
+  // Detect low-end iOS once on mount
+  useEffect(() => {
+    try {
+      const ua = navigator.userAgent || '';
+      const isIOS = /(iPhone|iPad|iPod)/i.test(ua);
+      const m = ua.match(/OS (\d+)_/);
+      const major = m ? parseInt(m[1], 10) : undefined;
+      const smallScreen = Math.min(window.screen.width, window.screen.height) <= 375;
+      const low = isIOS && ((typeof major === 'number' && major <= 14) || smallScreen);
+      setLowEndIOS(!!low);
+    } catch {
+      setLowEndIOS(false);
+    }
+  }, []);
+
+  // Track and control theme locally so settings can toggle it
+  useEffect(() => {
+    try {
+      const savedTheme = (localStorage.getItem('theme') as 'dark'|'light') || 'dark';
+      setTheme(savedTheme);
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } catch {}
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => {
+      const next: 'dark'|'light' = prev === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem('theme', next);
+        document.documentElement.setAttribute('data-theme', next);
+      } catch {}
+      return next;
+    });
+  }, []);
 
   // Helper open/close functions that preserve scroll position
   const openChat = useCallback(() => {
@@ -95,6 +136,11 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   // Keep scroll lock in sync with viewport changes while chat is open
   useEffect(() => {
+    // In standalone mode we don't lock scroll at all to avoid extra compositing layers
+    if (standalone) {
+      document.body.classList.remove('no-scroll');
+      return;
+    }
     const mq = window.matchMedia('(min-width: 768px)');
     const apply = () => {
       if (!open) {
@@ -113,7 +159,20 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     apply();
     mq.addEventListener('change', apply);
     return () => mq.removeEventListener('change', apply);
-  }, [open, fullscreen]);
+  }, [open, fullscreen, standalone]);
+
+  // Expose chat-open state via body class and a custom event for other components (like ThemeSwitcher)
+  useEffect(() => {
+    try {
+      const b = document.body;
+      if (open) b.classList.add('chat-open'); else b.classList.remove('chat-open');
+      const ev = new CustomEvent('charlie:chatOpenChange', { detail: { open } });
+      document.dispatchEvent(ev);
+    } catch {}
+    return () => {
+      try { document.body.classList.remove('chat-open'); } catch {}
+    };
+  }, [open]);
 
   // ---- Effects: load persisted ----
   useEffect(() => {
@@ -153,13 +212,17 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       const m = localStorage.getItem(STORAGE.MESSAGES);
       if (m) {
         const parsed = JSON.parse(m);
-        if (Array.isArray(parsed)) setMessages(parsed);
+        if (Array.isArray(parsed)) setMessages(() => {
+          const next = parsed as ChatMessage[];
+          return standalone ? next.slice(-40) : next;
+        });
       }
     } catch (e) {
       console.log('Init load error', e);
     }
 
-    if (!showInitialModal) return;
+    // Skip welcome modal entirely on /chat (lighter UX) or if explicitly disabled
+    if (!showInitialModal || pathname === '/chat') return;
 
     const maybeShow = () => {
       try {
@@ -191,14 +254,17 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
         clearTimeout(fallbackTimer);
       };
     }
-  }, [showInitialModal]);
+  }, [showInitialModal, pathname, standalone]);
 
   // Persist messages
   useEffect(() => {
     if (settings.persist) {
-      try { localStorage.setItem(STORAGE.MESSAGES, JSON.stringify(messages)); } catch {}
+      try {
+        const toStore = standalone ? messages.slice(-40) : messages;
+        localStorage.setItem(STORAGE.MESSAGES, JSON.stringify(toStore));
+      } catch {}
     }
-  }, [messages, settings.persist]);
+  }, [messages, settings.persist, standalone]);
 
   // Persist settings
   useEffect(() => {
@@ -207,7 +273,14 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   // Scroll to bottom on new content
   const scrollBottom = useCallback(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = messagesRef.current;
+    if (el) {
+      // Jump directly to bottom within the scroll container to avoid scrolling the page
+      el.scrollTop = el.scrollHeight;
+    } else {
+      // Fallback (should rarely happen)
+      endRef.current?.scrollIntoView({ behavior: 'auto', block: 'end', inline: 'nearest' });
+    }
   }, []);
   useEffect(() => { scrollBottom(); }, [messages, typing, scrollBottom]);
 
@@ -216,13 +289,11 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   // Close when tapping outside on mobile (only if not fullscreen desktop mode)
   useEffect(() => {
-    if (!open) return;
+    if (!open || standalone) return; // no outside-close in standalone to reduce listeners
     const handler = (e: MouseEvent | TouchEvent) => {
       if (window.matchMedia('(min-width: 768px)').matches) return; // only mobile
       if (!panelRef.current) return;
       if (panelRef.current.contains(e.target as Node)) return;
-      // New behavior: only close if the tap is in the header / navigation area to avoid
-      // accidental closures when user taps near bottom (theme switcher region or general content).
       const headerEl = document.querySelector('.header');
       if (headerEl && headerEl.contains(e.target as Node)) {
         closeChat();
@@ -234,7 +305,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       document.removeEventListener('mousedown', handler);
       document.removeEventListener('touchstart', handler);
     };
-  }, [open, closeChat]);
+  }, [open, closeChat, standalone]);
 
   // Simple notification sound (generated programmatically)
   const playSound = useCallback(() => {
@@ -261,16 +332,27 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     if (!trimmed) return;
     const now = Date.now();
     if (now - lastSentAt < RATE_LIMIT_MS) {
-      setMessages(m => [...m, { id: 'rate_'+now, content: withDog(`Please wait a moment before sending another question.`), sender: 'charlie', timestamp: now }]);
+      setMessages((m: ChatMessage[]) => {
+        const rateMsg: ChatMessage = { id: 'rate_'+now, content: withDog(`Please wait a moment before sending another question.`), sender: 'charlie', timestamp: now };
+        const next: ChatMessage[] = [...m, rateMsg];
+        return standalone ? next.slice(-40) : next;
+      });
       return;
     }
     if (trimmed.length > MAX_CHARS) {
-      setMessages(m => [...m, { id: 'len_'+now, content: withDog(`That message is too long. Keep it under ${MAX_CHARS} characters.`), sender: 'charlie', timestamp: now }]);
+      setMessages((m: ChatMessage[]) => {
+        const lenMsg: ChatMessage = { id: 'len_'+now, content: withDog(`That message is too long. Keep it under ${MAX_CHARS} characters.`), sender: 'charlie', timestamp: now };
+        const next: ChatMessage[] = [...m, lenMsg];
+        return standalone ? next.slice(-40) : next;
+      });
       return;
     }
     // Push user message
     const userMsg: ChatMessage = { id: 'u_'+now, content: trimmed, sender: 'user', timestamp: now };
-    setMessages(m => [...m, userMsg]);
+    setMessages((m: ChatMessage[]) => {
+      const next: ChatMessage[] = [...m, userMsg];
+      return standalone ? next.slice(-40) : next;
+    });
     setInput('');
     setLastSentAt(now);
     setLoading(true);
@@ -288,14 +370,21 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       setTimeout(() => {
         setTyping(false);
         const charMsg: ChatMessage = { id: 'c_'+Date.now(), content: withDog(data.message || 'Woof! Something went odd.'), sender: 'charlie', timestamp: Date.now() };
-        setMessages(m => [...m, charMsg]);
+        setMessages((m: ChatMessage[]) => {
+          const next: ChatMessage[] = [...m, charMsg];
+          return standalone ? next.slice(-40) : next;
+        });
         playSound();
         setLoading(false);
       }, delay);
   } catch {
       setTyping(false);
       setLoading(false);
-      setMessages(m => [...m, { id: 'err_'+Date.now(), content: withDog('Woof! Network hiccup—try again shortly.'), sender: 'charlie', timestamp: Date.now() }]);
+      setMessages((m: ChatMessage[]) => {
+        const errMsg: ChatMessage = { id: 'err_'+Date.now(), content: withDog('Woof! Network hiccup—try again shortly.'), sender: 'charlie', timestamp: Date.now() };
+        const next: ChatMessage[] = [...m, errMsg];
+        return standalone ? next.slice(-40) : next;
+      });
     }
   };
 
@@ -353,31 +442,41 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       {open && (
         <div
           ref={panelRef}
-          className={[
-            'fixed flex flex-col z-[60] md:z-50',
-            fullscreen
-              ? 'inset-0 w-full'
-              : [
-                  // Mobile: truly fullscreen overlay
-                  'inset-0',
-                  // Desktop/Tablet: float near bottom-right with fixed height
-                  'md:bottom-20 md:inset-x-auto md:right-4 md:top-auto md:left-auto md:h-[560px]',
-                  'w-full md:w-96 max-w-full md:max-w-[calc(100vw-2rem)]'
-                ].join(' ')
-          ].join(' ')}
+          className={(function(){
+            if (standalone) {
+              // Simple page layout: no fixed positioning or shadows
+              return 'relative flex flex-col z-10 w-full h-[calc(100dvh-0px)]';
+            }
+            return [
+              'fixed flex flex-col z-[60] md:z-50',
+              fullscreen
+                ? 'inset-0 w-full'
+                : [
+                    'inset-0',
+                    'md:bottom-20 md:inset-x-auto md:right-4 md:top-auto md:left-auto md:h-[560px]',
+                    'w-full md:w-96 max-w-full md:max-w-[calc(100vw-2rem)]'
+                  ].join(' ')
+            ].join(' ');
+          })()}
           style={(() => {
             const style: React.CSSProperties & { ['--header-height']?: string } = {};
             style['--header-height'] = `${headerOffset}px`;
-            if (fullscreen) {
+            if (!standalone && fullscreen) {
               style.top = headerOffset;
               style.height = `calc(100dvh - ${headerOffset}px)`;
             }
             return style;
           })()}
         >
-          <div className="relative flex flex-col h-full overflow-hidden bg-base-100 md:bg-base-100 md:rounded-2xl md:shadow-xl border-t border-base-300 md:border md:border-base-300/70 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-100/85">
+          <div className={[
+            'relative flex flex-col h-full overflow-hidden bg-base-100',
+            standalone ? 'border-t border-base-300' : 'md:bg-base-100 md:rounded-2xl md:shadow-xl border-t border-base-300 md:border md:border-base-300/70 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-100/85'
+          ].join(' ')}>
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-base-300 bg-base-300 md:bg-base-300/90 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-300/70 md:rounded-t-2xl">
+            <div className={[
+              'flex items-center justify-between px-4 py-3 border-b border-base-300',
+              standalone ? 'bg-base-200' : 'bg-base-300 md:bg-base-300/90 md:backdrop-blur md:supports-[backdrop-filter]:bg-base-300/70 md:rounded-t-2xl'
+            ].join(' ')}>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 flex items-center justify-center overflow-hidden p-1 ring-1 ring-base-300">
                   <Image src="/charlie-bull.png" alt="Charlie Bull" width={40} height={40} className="w-full h-full object-contain drop-shadow" />
@@ -389,9 +488,11 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
               </div>
               <div className="flex items-center gap-1">
                 <button aria-label="Settings" onClick={() => setShowSettings(s => !s)} className="btn btn-ghost btn-sm btn-circle"><Settings size={16} /></button>
+                {!standalone && (
                 <button aria-label={fullscreen ? 'Exit fullscreen' : 'Enter fullscreen'} onClick={() => setFullscreen(f => !f)} className="btn btn-ghost btn-sm btn-circle hidden md:inline-flex">
                   {fullscreen ? <Minimize2 size={16}/> : <Maximize2 size={16}/>}
                 </button>
+                )}
                 <button
                   aria-label="Close"
                   onClick={() => {
@@ -411,11 +512,21 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             </div>
 
             {showSettings && (
-              <div className="px-4 py-3 border-b border-base-300 bg-base-200/95 md:bg-base-200 text-sm space-y-3">
+              <div className="px-4 py-3 border-b border-base-300 bg-base-200 text-sm space-y-3">
                 <div className="flex items-center justify-between">
                   <span>Sound notifications</span>
                   <button onClick={() => setSettings(p => ({ ...p, sound: !p.sound }))} className="btn btn-ghost btn-xs btn-circle" aria-label="Toggle sound">
                     {settings.sound ? <Volume2 size={16}/> : <VolumeX size={16}/>}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Theme</span>
+                  <button onClick={toggleTheme} className="btn btn-ghost btn-xs btn-circle" aria-label="Toggle theme">
+                    {theme === 'dark' ? (
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/></svg>
+                    ) : (
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/></svg>
+                    )}
                   </button>
                 </div>
                 <div className="flex items-center justify-between">
@@ -426,23 +537,23 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
                   <span>Clear chat</span>
                   <button onClick={clearChat} className="btn btn-ghost btn-xs btn-circle text-error" aria-label="Clear chat"><Trash2 size={16}/></button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>Fullscreen (desktop)</span>
-                  <button onClick={() => setFullscreen(f => !f)} className="btn btn-ghost btn-xs btn-circle hidden md:inline-flex" aria-label="Toggle fullscreen">
-                    {fullscreen ? <Minimize2 size={16}/> : <Maximize2 size={16}/>}
-                  </button>
-                </div>
+                {!standalone && (
+                  <div className="flex items-center justify-between">
+                    <span>Fullscreen (desktop)</span>
+                    <button onClick={() => setFullscreen(f => !f)} className="btn btn-ghost btn-xs btn-circle hidden md:inline-flex" aria-label="Toggle fullscreen">
+                      {fullscreen ? <Minimize2 size={16}/> : <Maximize2 size={16}/>}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
             {/* Messages area */}
-            <div className={[ 
-              'flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 text-sm bg-base-100 md:bg-base-50',
-              // Reserve space for overlaid input bar at the bottom on mobile
-              'pb-32',
-              // On desktop/tablet, only reserve space in fullscreen mode; a bit more to clear the larger send button and spacing
-              fullscreen ? 'md:pb-36' : 'md:pb-4'
-            ].join(' ')} role="log" aria-live="polite">
+            <div ref={messagesRef} className={[
+              'flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 text-sm bg-base-100',
+              standalone ? 'pb-4' : 'pb-32',
+              !standalone && (fullscreen ? 'md:pb-36' : 'md:pb-4')
+            ].filter(Boolean).join(' ')} role="log" aria-live="polite">
               {messages.length === 0 && (
                 <div className="text-center opacity-70">
                   <p className="text-lg mb-2">Start a conversation!</p>
@@ -469,12 +580,16 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
                 <div className="flex justify-start">
                   <div className="bg-base-50 text-base-content border border-base-300 rounded-xl px-3 py-2 mr-1 max-w-[60%] shadow-sm">
                     <div className="flex items-center gap-2 mb-1"><span className="inline-block w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 p-[1px] ring-1 ring-base-300"><Image src="/charlie-bull.png" alt="Charlie Bull" width={20} height={20} className="w-full h-full object-contain" /></span><span className="text-[10px] uppercase tracking-wide opacity-70 font-semibold">CHAR</span></div>
-                    <div className="flex items-center gap-1 text-xs">
-                      <span>Typing</span>
-                      <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay:'0ms'}} />
-                      <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay:'150ms'}} />
-                      <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay:'300ms'}} />
-                    </div>
+                    {standalone ? (
+                      <div className="text-xs">Typing…</div>
+                    ) : (
+                      <div className="flex items-center gap-1 text-xs">
+                        <span>Typing</span>
+                        <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay:'0ms'}} />
+                        <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay:'150ms'}} />
+                        <span className="w-1 h-1 bg-current rounded-full animate-bounce" style={{animationDelay:'300ms'}} />
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -484,27 +599,23 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             {/* Input */}
             {/* Background tail: matches input area's blue and extends to footer.
                 Visible: always on mobile; on desktop/tablet only when fullscreen. */}
-            <div
-              className={[
-                'absolute left-0 right-0 bottom-0 z-0',
-                'h-16',
-                // Solid color to prevent translucent lightening differences
-                'bg-base-300',
-                // Visibility rules
-                'block',
-                'md:block'
-              ].join(' ')}
-            />
+            {!standalone && (
+              <div
+                className={[
+                  'absolute left-0 right-0 bottom-0 z-0',
+                  'h-16',
+                  'bg-base-300',
+                  'block',
+                  'md:block'
+                ].join(' ')}
+              />
+            )}
 
             <div className={[
               'border-base-300 bg-base-300',
-              'pt-6 pb-2 md:pt-5 md:pb-2 px-3',
-              // Overlay the input above the theme button: place it slightly above bottom on mobile
-              'absolute left-0 right-0 bottom-1',
-              // On desktop/tablet, overlay only when fullscreen; otherwise keep normal flow and nudge down a bit for centering in tail
-              fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-14' : 'md:relative md:border-t md:-mb-1',
-              'z-10'
-            ].join(' ')}>
+              standalone ? 'pt-4 pb-2 px-3 relative border-t' : 'pt-6 pb-2 md:pt-5 md:pb-2 px-3 absolute left-0 right-0 bottom-1 z-10',
+              !standalone && (fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-14' : 'md:relative md:border-t md:-mb-1')
+            ].filter(Boolean).join(' ')}>
               <form onSubmit={handleSubmit}>
                 <div className="flex items-center gap-2">
                   <input
