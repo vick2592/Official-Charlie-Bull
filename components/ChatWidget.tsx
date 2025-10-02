@@ -52,14 +52,12 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   const [settings, setSettings] = useState<SettingsState>({ sound: false, persist: true });
   const [showSettings, setShowSettings] = useState(false);
   const [fullscreen, setFullscreen] = useState(false); // desktop fullscreen toggle
-  const [initialVH, setInitialVH] = useState<number | null>(null); // lock mobile overlay height
 
   // Refs
   const endRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>(`sess_${Date.now()}_${Math.random().toString(36).slice(2,10)}`);
   const scrollPosRef = useRef(0); // preserve scroll position to prevent jump
-  const [kbInset, setKbInset] = useState(0); // keyboard inset compensation on iOS
 
   // Helper open/close functions that preserve scroll position
   const openChat = useCallback(() => {
@@ -118,16 +116,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     return () => window.removeEventListener('resize', computeHeader);
   }, []);
 
-  // Cache initial viewport height on first open to stabilize iOS size when keyboard appears
-  useEffect(() => {
-    if (!open) return;
-    if (initialVH == null) {
-      // Prefer visualViewport if available, fallback to innerHeight
-      const vv = window.visualViewport;
-      const vh = vv ? Math.round(vv.height) : window.innerHeight;
-      setInitialVH(vh);
-    }
-  }, [open, initialVH]);
+  // (Removed initial viewport height lock; relying on 100dvh and input font-size fix instead)
 
   useEffect(() => {
     try {
@@ -195,25 +184,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   useEffect(() => { scrollBottom(); }, [messages, typing, scrollBottom]);
 
 
-  // Handle iOS keyboard visual viewport changes to avoid full-page reflow/reset on Safari
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const isMob = !window.matchMedia('(min-width: 768px)').matches;
-    const vv = window.visualViewport;
-    if (!isMob || !vv) return;
-    const onResize = () => {
-      // When keyboard opens, visualViewport height shrinks; compute bottom inset
-      const inset = Math.max(0, (window.innerHeight - vv.height - (vv.offsetTop || 0)));
-      setKbInset(inset);
-    };
-    vv.addEventListener('resize', onResize);
-    vv.addEventListener('scroll', onResize);
-    onResize();
-    return () => {
-      vv.removeEventListener('resize', onResize);
-      vv.removeEventListener('scroll', onResize);
-    };
-  }, []);
+  // Removed visualViewport keyboard handler; using font-size and dvh fixes instead
 
   // Close when tapping outside on mobile (only if not fullscreen desktop mode)
   useEffect(() => {
@@ -373,13 +344,6 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             if (fullscreen) {
               style.top = headerOffset;
               style.height = `calc(100dvh - ${headerOffset}px)`;
-            } else {
-              // Mobile overlay: lock height to initial viewport to avoid jump on keyboard
-              if (!window.matchMedia('(min-width: 768px)').matches) {
-                const vh = initialVH ?? window.innerHeight;
-                style.height = `${vh}px`;
-                style.top = 0;
-              }
             }
             return style;
           })()}
@@ -493,18 +457,18 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
             <div className={[
               'border-base-300 bg-base-300',
-              'pt-6 pb-2 md:py-3 px-3',
+              'pt-6 pb-2 md:pt-5 md:pb-2 px-3',
               // Overlay the input above the theme button: place it slightly above bottom on mobile
-              'absolute left-0 right-0',
+              'absolute left-0 right-0 bottom-1',
               // On desktop/tablet, overlay only when fullscreen; otherwise keep normal flow and nudge down a bit for centering in tail
-              fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-16' : 'md:relative md:border-t md:-mb-1',
+              fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-14' : 'md:relative md:border-t md:-mb-1',
               'z-10'
-            ].join(' ')} style={{ bottom: `calc(${Math.max(1, kbInset)}px + env(safe-area-inset-bottom))` }}>
+            ].join(' ')}>
               <form onSubmit={handleSubmit}>
                 <div className="flex items-center gap-2">
                   <input
                     aria-label="Chat input"
-                    className={`input input-bordered input-sm h-9 md:h-12 flex-1 ${remaining < 0 ? 'input-error' : ''}`}
+                    className={`input input-bordered input-sm h-9 md:h-12 flex-1 text-[16px] md:text-base ${remaining < 0 ? 'input-error' : ''}`}
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     placeholder="Ask Charlie a DeFi question..."
