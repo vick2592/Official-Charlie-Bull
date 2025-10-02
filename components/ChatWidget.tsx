@@ -14,7 +14,7 @@ interface ChatMessage {
   timestamp: number;
 }
 
-interface ChatWidgetProps { showInitialModal?: boolean }
+type ChatWidgetProps = object;
 
 interface SettingsState {
   sound: boolean;
@@ -38,13 +38,12 @@ declare global {
   interface Window { __CHARLIE_SITE_LOADED__?: boolean }
 }
 
-export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
+export function ChatWidget({}: ChatWidgetProps) {
   const router = useRouter();
   const pathname = usePathname();
   // UI state
   const [open, setOpen] = useState(false);
   const [lowEndIOS, setLowEndIOS] = useState(false); // detect once and reuse
-  const [showWelcome, setShowWelcome] = useState(false);
   const [typing, setTyping] = useState(false);
   const [loading, setLoading] = useState(false);
   const [lastSentAt, setLastSentAt] = useState(0);
@@ -69,6 +68,8 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
   // Derived: standalone lightweight mode for older iPhones on /chat
   const standalone = pathname === '/chat' && lowEndIOS;
   const legacy = standalone; // alias for readability
+  // Detect docs route; used to hide toggle on legacy iPhones
+  const isDocs = (pathname || '').startsWith('/docs');
 
   // Detect low-end iOS once on mount
   useEffect(() => {
@@ -175,6 +176,17 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     };
   }, [open]);
 
+  // Global event to programmatically open chat (used by CTA on landing)
+  useEffect(() => {
+    const handler = () => {
+      // If already open, do nothing (it's not a toggle)
+      if (open) return;
+      openChat();
+    };
+    document.addEventListener('charlie:openChat', handler as EventListener);
+    return () => document.removeEventListener('charlie:openChat', handler as EventListener);
+  }, [open, openChat]);
+
   // ---- Effects: load persisted ----
   useEffect(() => {
     // Auto-open when landing directly on /chat route and mark as route-driven
@@ -222,42 +234,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
       console.log('Init load error', e);
     }
 
-    // Skip welcome modal entirely on /chat (lighter UX), if explicitly disabled, or on legacy iPhones
-    if (!showInitialModal || pathname === '/chat' || lowEndIOS) return;
-
-    const maybeShow = () => {
-      try {
-        // Double-guard: never show welcome modal on legacy iPhones
-        if (lowEndIOS) return;
-        const seen = localStorage.getItem(STORAGE.WELCOME);
-        if (!seen) {
-          setTimeout(() => setShowWelcome(true), 250); // slight delay after load fade
-        }
-      } catch {}
-    };
-
-    // if loading already finished (event may have fired), show immediately
-  const loadedFlag = window.__CHARLIE_SITE_LOADED__;
-    if (loadedFlag) {
-      maybeShow();
-    } else {
-      const onLoaded = () => {
-        window.__CHARLIE_SITE_LOADED__ = true;
-        maybeShow();
-      };
-      document.addEventListener('charlie:siteLoaded', onLoaded, { once: true });
-      // Fallback: if no event fires (e.g., route without loading screen), still show after delay
-      const fallbackTimer = setTimeout(() => {
-        if (!window.__CHARLIE_SITE_LOADED__) {
-          maybeShow();
-        }
-      }, 4000);
-      return () => {
-        document.removeEventListener('charlie:siteLoaded', onLoaded);
-        clearTimeout(fallbackTimer);
-      };
-    }
-  }, [showInitialModal, pathname, standalone, legacy, lowEndIOS]);
+  }, [standalone, legacy]);
 
   // Persist messages (skip in legacy mode entirely)
   useEffect(() => {
@@ -290,6 +267,34 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
 
   // Removed visualViewport keyboard handler; using font-size and dvh fixes instead
+  // Legacy iOS keyboard handling: adjust panel bottom offset so input/send stay above keyboard
+  useEffect(() => {
+    if (!standalone) return; // only for legacy standalone mode
+    // Some iOS versions support visualViewport; use it if available
+  const vv: VisualViewport | undefined = typeof window !== 'undefined' && 'visualViewport' in window ? window.visualViewport as VisualViewport : undefined;
+    const panel = panelRef.current;
+    if (!vv || !panel) return;
+
+    const onResize = () => {
+      // Calculate keyboard overlap and set bottom offset accordingly
+      const overlap = Math.max(0, (window.innerHeight - vv.height - vv.offsetTop));
+      panel.style.bottom = `${overlap}px`;
+    };
+    const onScroll = () => {
+      // Keep the panel pinned at correct bottom when keyboard wobbles
+      onResize();
+    };
+    vv.addEventListener('resize', onResize);
+    vv.addEventListener('scroll', onScroll);
+    // Initial sync
+    onResize();
+    return () => {
+      vv.removeEventListener('resize', onResize);
+      vv.removeEventListener('scroll', onScroll);
+      // Cleanup: reset bottom so CSS controls when leaving standalone
+      if (panel) panel.style.bottom = '0px';
+    };
+  }, [standalone, headerOffset]);
 
   // Close when tapping outside on mobile (only if not fullscreen desktop mode)
   useEffect(() => {
@@ -413,11 +418,7 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
     try { localStorage.removeItem(STORAGE.MESSAGES); } catch {}
   };
 
-  const closeWelcome = () => {
-    setShowWelcome(false);
-    try { localStorage.setItem(STORAGE.WELCOME, '1'); } catch {}
-    openChat();
-  };
+  // (welcome modal removed)
 
   const remaining = MAX_CHARS - input.length;
   const limitClass = remaining < 0 ? 'text-error' : remaining < 40 ? 'text-warning' : 'text-base-content/60';
@@ -425,26 +426,10 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
   return (
     <>
-      {showWelcome && !lowEndIOS && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-base-100 border border-primary/30 rounded-2xl w-full max-w-md p-6 shadow-xl">
-            <div className="text-center">
-              <div className="mb-4 flex justify-center">
-                <Image src="/charlie-bull.png" alt="Charlie Bull" width={96} height={96} className="w-24 h-24 object-contain" priority />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Chat with Charlie</h2>
-              <p className="text-sm opacity-80 mb-4">Get quick, friendly DeFi explanations on staking, tokenomics, cross-chain moves, security and more. Ask anything—Charlie will fetch it (with a wag). 🐕</p>
-              <div className="flex gap-2 justify-center">
-                <button onClick={closeWelcome} className="btn btn-primary">Let&apos;s Chat 🚀</button>
-                <button onClick={() => { setShowWelcome(false); try { localStorage.setItem(STORAGE.WELCOME,'1'); } catch {}; }} className="btn btn-ghost">Later</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* welcome modal removed */}
 
-      {/* Floating button */}
-      {!open && (
+      {/* Floating button (hidden on docs for legacy iPhones) */}
+      {!open && !(lowEndIOS && isDocs) && (
         <div className="fixed bottom-16 right-4 md:bottom-20 md:right-4 z-40">
           <button aria-label="Open chat" onClick={openChat} className="btn btn-primary btn-circle btn-sm md:btn-md shadow-lg hover:shadow-xl transition-all">
             <MessageCircle className="w-5 h-5 md:w-6 md:h-6" />
@@ -457,8 +442,8 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
           ref={panelRef}
           className={(function(){
             if (standalone) {
-              // Simple page layout: no fixed positioning or shadows
-              return 'relative flex flex-col z-10 w-full h-[calc(100dvh-0px)]';
+              // Legacy standalone: fixed to viewport (top/bottom) so it spans full screen and sits above header
+              return 'fixed inset-x-0 bottom-0 z-[60] w-full flex flex-col';
             }
             return [
               'fixed flex flex-col z-[60] md:z-50',
@@ -474,7 +459,10 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
           style={(() => {
             const style: React.CSSProperties & { ['--header-height']?: string } = {};
             style['--header-height'] = `${headerOffset}px`;
-            if (!standalone && fullscreen) {
+            if (standalone) {
+              style.top = 0;
+              style.bottom = 0;
+            } else if (!standalone && fullscreen) {
               style.top = headerOffset;
               style.height = `calc(100dvh - ${headerOffset}px)`;
             }
@@ -568,10 +556,10 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
             {/* Messages area */}
             <div ref={messagesRef} className={[
               'flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 text-sm bg-base-100',
-              standalone ? 'pb-4' : 'pb-32',
+              standalone ? 'pb-20' : 'pb-32',
               !standalone && (fullscreen ? 'md:pb-36' : 'md:pb-4')
             ].filter(Boolean).join(' ')} role="log" aria-live="polite">
-              {messages.length === 0 && !legacy && (
+              {messages.length === 0 && (
                 <div className="text-center opacity-70">
                   <p className="text-lg mb-2">Start a conversation!</p>
                   <div className="grid grid-cols-2 gap-2 mt-4">
@@ -636,9 +624,11 @@ export function ChatWidget({ showInitialModal = true }: ChatWidgetProps) {
 
             <div className={[
               'border-base-300 bg-base-300',
-              standalone ? 'pt-4 pb-2 px-3 relative border-t' : 'pt-6 pb-2 md:pt-5 md:pb-2 px-3 absolute left-0 right-0 bottom-1 z-10',
+              standalone ? 'pt-4 pb-2 px-3 absolute left-0 right-0 bottom-0 z-10 border-t' : 'pt-6 pb-2 md:pt-5 md:pb-2 px-3 absolute left-0 right-0 bottom-1 z-10',
               !standalone && (fullscreen ? 'md:absolute md:left-0 md:right-0 md:bottom-14' : 'md:relative md:border-t md:-mb-1')
-            ].filter(Boolean).join(' ')}>
+            ].filter(Boolean).join(' ')}
+              style={standalone ? { paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 0.5rem)' } : undefined}
+            >
               <form onSubmit={handleSubmit}>
                 <div className="flex items-center gap-2">
                   <input

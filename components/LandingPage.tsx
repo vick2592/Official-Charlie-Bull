@@ -64,12 +64,25 @@ export function LandingPage() {
     <div className="bg-base-100 flex flex-col flex-grow">
       <section id="home" ref={homeRef} className="pt-[calc(var(--header-height)+1.5rem)] lg:pt-8">
         <div className="flex flex-col mt-7 items-center">
-          <h1 className="text-center rounded-lg">
-            <span className="font-creambeige font-bold leading-tight text-5xl">$CHAR</span>
-          </h1>
-          <div className="mx-3 md:mx-20 p-3 text-center">
-            <div className="text-4xl text-center m-1">Welcome to Charlie Bull,</div>
-            <div className="text-4xl text-center font-bold">The first Cross-Chain pup on Ethereum!</div>
+          {/* Chat CTA simple text + button */}
+          <div className="mt-4 w-full px-4">
+              <div className="mx-auto max-w-3xl text-center">
+              <div className="text-4xl md:text-5xl leading-tight">
+                <span className="font-creambeige font-bold">WELCOME</span>
+                <br />
+                <span className="text-2xl md:text-3xl">Chat with <span className="font-creambeige">Charlie</span> now!</span>
+              </div>
+              <div className="mt-3">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-md chat-cta-btn"
+                  aria-label="Open chat with Charlie"
+                  onClick={() => { document.dispatchEvent(new Event('charlie:openChat')); }}
+                >
+                  Chat now
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -146,11 +159,13 @@ export function LandingPage() {
 
       <section id="buy-it-now" ref={howToBuyRef} className="pt-16 lg:pt-8">
         <div className="px-5">
-          <div className="text-4xl text-center font-bold mb-7">Buy it Now</div>
+          <div className="text-4xl text-center font-bold mb-7">
+            <span>Buy it Now</span>
+          </div>
           
           <div className="flex justify-center items-center mt-4">
             <div className="flex flex-col justify-center items-center text-center">
-              <p className="text-xl font-semibold mb-3">Charlie Bull Token address:</p>
+              <p className="text-xl font-semibold mb-3">$CHAR Token address:</p>
               <TokenAddress address="0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" />
               {/* <p className="text-sm text-base-content/70 mt-2">(Click to copy)</p> */}
             </div>

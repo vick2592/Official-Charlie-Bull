@@ -112,3 +112,8 @@ section[id] {
 .animate-spin-slow {
   animation: spinSlow 8s linear infinite;
 }
+
+/* Ensure Chat now button text is darker blue in light mode */
+:root[data-theme='light'] .chat-cta-btn {
+  color: #0b3b8a !important; /* dark blue text for accessibility on light primary */
+}
