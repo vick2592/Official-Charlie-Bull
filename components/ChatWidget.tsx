@@ -27,7 +27,8 @@ const RATE_LIMIT_MS = 2000;
 const STORAGE = {
   MESSAGES: 'charlie_chat_messages',
   SETTINGS: 'charlie_chat_settings',
-  WELCOME: 'charlie_welcome_seen_v5' // switched to localStorage persistence across visits
+  WELCOME: 'charlie_welcome_seen_v5', // switched to localStorage persistence across visits
+  SESSION: 'charlie_chat_session'
 } as const;
 
 // Utility ensure dog emoji ending
@@ -238,14 +239,26 @@ export function ChatWidget({}: ChatWidgetProps) {
 
   // Persist messages (skip in legacy mode entirely)
   useEffect(() => {
-    if (legacy) return;
-    if (settings.persist) {
-      try {
-        const toStore = messages;
-        localStorage.setItem(STORAGE.MESSAGES, JSON.stringify(toStore));
-      } catch {}
-    }
+    // Persist for both normal and legacy; for legacy, cap to last 20 to stay lightweight
+    if (!settings.persist) return;
+    try {
+      const toStore = legacy ? messages.slice(-20) : messages;
+      localStorage.setItem(STORAGE.MESSAGES, JSON.stringify(toStore));
+    } catch {}
   }, [messages, settings.persist, legacy]);
+
+  // Persist/reuse session id in legacy mode so server sees a continuous session
+  useEffect(() => {
+    if (!legacy) return;
+    try {
+      const saved = localStorage.getItem(STORAGE.SESSION);
+      if (saved) {
+        sessionIdRef.current = saved;
+      } else {
+        localStorage.setItem(STORAGE.SESSION, sessionIdRef.current);
+      }
+    } catch {}
+  }, [legacy]);
 
   // Persist settings
   useEffect(() => {
