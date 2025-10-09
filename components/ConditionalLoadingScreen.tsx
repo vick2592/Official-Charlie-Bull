@@ -6,10 +6,9 @@ import { LoadingScreen } from './LoadingScreen';
 export function ConditionalLoadingScreen() {
   const pathname = usePathname();
   
-  // Don't show loading screen for docs pages
-  if (pathname?.startsWith('/docs')) {
-    return null;
+  // Show loading screen ONLY on the home page
+  if (pathname === '/' || pathname === '/#home') {
+    return <LoadingScreen />;
   }
-  
-  return <LoadingScreen />;
+  return null;
 }

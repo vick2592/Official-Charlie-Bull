@@ -194,11 +194,19 @@ export function ChatWidget({}: ChatWidgetProps) {
     if (typeof window !== 'undefined' && pathname === '/chat') {
       setOpen(true);
       (autoOpenedFromRouteRef.current = true);
+      // On desktop/tablet, always open in fullscreen mode for dedicated /chat view (non-legacy)
+      try {
+        const isDesktopOrTablet = window.matchMedia('(min-width: 768px)').matches;
+        if (isDesktopOrTablet && !lowEndIOS) {
+          setFullscreen(true);
+        }
+      } catch {}
     } else {
       // If we navigate away from /chat and the widget was opened by the route, close it
       if (autoOpenedFromRouteRef.current) {
         autoOpenedFromRouteRef.current = false;
         setOpen(false);
+        setFullscreen(false);
       }
     }
     // Determine header height (if header component exists) and set CSS var fallback
@@ -215,7 +223,7 @@ export function ChatWidget({}: ChatWidgetProps) {
     computeHeader();
     window.addEventListener('resize', computeHeader);
     return () => window.removeEventListener('resize', computeHeader);
-  }, [pathname]);
+  }, [pathname, lowEndIOS]);
 
   // (Removed initial viewport height lock; relying on 100dvh and input font-size fix instead)
 
@@ -594,7 +602,9 @@ export function ChatWidget({}: ChatWidgetProps) {
                           <div className="flex items-center gap-2 mb-1"><span className="inline-block w-5 h-5 rounded-md overflow-hidden bg-gradient-to-br from-primary/30 via-secondary/30 to-accent/30 p-[1px] ring-1 ring-base-300"><Image src="/charlie-bull.png" alt="Charlie Bull" width={20} height={20} className="w-full h-full object-contain" /></span><span className="text-[10px] uppercase tracking-wide opacity-70 font-semibold">CHAR</span></div>
                         )
                       )}
-                      <p className="whitespace-pre-wrap leading-snug">{m.content}</p>
+                      <p className="whitespace-pre-wrap leading-snug [overflow-wrap:anywhere]">
+                        {m.content}
+                      </p>
                       {!legacy && <span className="block text-[10px] mt-1 opacity-50">{new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>}
                     </div>
                   </div>

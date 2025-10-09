@@ -676,13 +676,13 @@ export function LandingPage() {
                     </div>
                   </div>
 
-                  {/* Whitepaper Button */}
-                  <div className="flex justify-center w-full mb-4">
+                  {/* Whitepaper + Contact row */}
+                  <div className="mx-auto grid grid-cols-2 gap-4 w-full max-w-[560px] md:max-w-[640px] px-2 mt-4 mb-4">
                     <a
                       href="/docs"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-secondary btn-lg gap-2 transform hover:scale-105 transition duration-200 shadow-lg"
+                      className="btn btn-secondary btn-lg text-base md:text-lg gap-2 justify-center transform hover:scale-105 transition duration-200 shadow-lg w-full whitespace-nowrap flex-nowrap px-4"
                     >
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -694,11 +694,24 @@ export function LandingPage() {
                         strokeWidth="2" 
                         strokeLinecap="round" 
                         strokeLinejoin="round"
+                        className="shrink-0"
                       >
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
                         <polyline points="14,2 14,8 20,8"/>
                       </svg>
-                      Charlie&apos;s Woof Paper
+                      Woof Paper
+                    </a>
+                    <a
+                      href="mailto:info@charliebull.art"
+                      className="btn btn-outline btn-lg text-base md:text-lg gap-2 justify-center transform hover:scale-105 transition duration-200 w-full whitespace-nowrap flex-nowrap px-4"
+                      aria-label="Contact us via email"
+                    >
+                      {/* Email icon */}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                      </svg>
+                      Boop me
                     </a>
                   </div>
 
