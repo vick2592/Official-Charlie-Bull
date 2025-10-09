@@ -660,7 +660,7 @@ export function LandingPage() {
                       
                       {/* Telegram */}
                       <a
-                        href="https://t.me/charliebullai"
+                        href="https://t.me/+VUOILe0sPis3MmYx"
                         target="_blank"
                         rel="noreferrer"
                         className="transform hover:scale-110 hover:-translate-y-1 transition duration-200"
