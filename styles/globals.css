@@ -1,9 +1,9 @@
+/* Import squid styles first - @import must come before @tailwind */
+@import '../styles/squid.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import squid styles */
-@import '../styles/squid.css';
 
 html {
   scroll-behavior: smooth;

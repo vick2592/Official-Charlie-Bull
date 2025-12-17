@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Charlie Bull - Whitepaper",
-  description: "Official whitepaper for Charlie Bull, the first cross-chain AI pup on Ethereum",
+  title: "Charlie Bull - Woof Paper v1.0.3 | Complete Tokenomics",
+  description: "Official Woof Paper for Charlie Bull ($CHAR): 420.69 billion supply across 9 Ethereum chains. Comprehensive tokenomics, utility, and cross-chain documentation.",
 };
 
 export default function WhitepaperPage() {
@@ -11,13 +11,14 @@ export default function WhitepaperPage() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         <header className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4 font-creambeige">
-            Charlie Bull Whitepaper
+            Charlie Bull Woof Paper
           </h1>
           <p className="text-xl text-base-content/70">
             The First Cross-Chain AI Pup on Ethereum
           </p>
-          <div className="mt-6">
-            <span className="badge badge-primary badge-lg">Version 1.0.2</span>
+          <div className="mt-6 flex justify-center gap-4">
+            <span className="badge badge-primary badge-lg">Version 1.0.3</span>
+            <span className="badge badge-secondary badge-sm">Dec 15, 2025</span>
           </div>
         </header>
         

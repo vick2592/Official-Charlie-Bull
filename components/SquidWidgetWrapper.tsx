@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+// Create a client
+const queryClient = new QueryClient();
 
 // Dynamically import the widget with SSR disabled
 const SquidWidget = dynamic(
@@ -134,8 +137,10 @@ export function SquidWidgetWrapper() {
     return <div className="min-h-[400px] flex items-center justify-center">Loading widget...</div>;
   }
   return (
-    <SquidWidget
-      config={config}
-    />
+    <QueryClientProvider client={queryClient}>
+      <SquidWidget
+        config={config}
+      />
+    </QueryClientProvider>
   )
 }
