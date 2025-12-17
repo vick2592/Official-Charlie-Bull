@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import CopyButton from "@/components/CopyButton";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Charlie Bull - Woof Paper v1.0.3 | Complete Tokenomics",
@@ -16,9 +18,9 @@ export default function WhitepaperPage() {
           <p className="text-xl text-base-content/70">
             The First Cross-Chain AI Pup on Ethereum
           </p>
-          <div className="mt-6 flex justify-center gap-4">
+          <div className="mt-6 flex justify-center gap-4 items-center">
             <span className="badge badge-primary badge-lg">Version 1.0.3</span>
-            <span className="badge badge-secondary badge-sm">Dec 15, 2025</span>
+            <span className="badge badge-secondary badge-lg">Dec 15, 2025</span>
           </div>
         </header>
         
@@ -87,7 +89,103 @@ export default function WhitepaperPage() {
           
           {/* Tokenomics */}
           <section id="tokenomics" className="mb-12">
-            <h2 className="text-3xl font-bold mb-4">3. Tokenomics</h2>
+            <h2 className="text-3xl font-bold mb-6">3. Tokenomics</h2>
+            
+            <p className="text-lg mb-8">
+              Charlie Bull&apos;s tokenomics are designed for sustainable growth, deep liquidity, and genuine community empowerment.
+            </p>
+
+            {/* Token Overview */}
+            <div id="token-overview" className="mb-8 bg-primary/5 p-6 rounded-xl border border-primary/20">
+              <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                <Image src="/token-main.svg" alt="Charlie Bull Token" width={32} height={32} />
+                Token Overview
+              </h3>
+              
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-base-100 p-4 rounded-lg">
+                  <div className="text-sm text-base-content/60">Token Name</div>
+                  <div className="text-xl font-bold">Charlie Bull</div>
+                </div>
+                
+                <div className="bg-base-100 p-4 rounded-lg">
+                  <div className="text-sm text-base-content/60">Ticker</div>
+                  <div className="text-xl font-bold">$CHAR</div>
+                </div>
+                
+                <div className="bg-base-100 p-4 rounded-lg">
+                  <div className="text-sm text-base-content/60">Total Supply</div>
+                  <div className="text-xl font-bold">420,690,000,000</div>
+                  <div className="text-sm text-base-content/60">(420.69 Billion)</div>
+                </div>
+                
+                <div className="bg-base-100 p-4 rounded-lg">
+                  <div className="text-sm text-base-content/60">Token Standard</div>
+                  <div className="text-xl font-bold">ERC-20</div>
+                </div>
+              </div>
+
+              <div className="bg-base-100 p-4 rounded-lg">
+                <div className="text-sm text-base-content/60 mb-2">Contract Address (Same on all 9 chains)</div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <code className="text-sm font-mono bg-base-300 px-3 py-2 rounded break-all flex-1">
+                    0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1
+                  </code>
+                  <CopyButton text="0x7F9532940e98eB7c2da6ba23c3f3D06315BfaAF1" />
+                </div>
+              </div>
+            </div>
+
+            {/* Cross-Chain Deployment */}
+            <div id="cross-chain" className="mb-8 bg-secondary/5 p-6 rounded-xl border border-secondary/20">
+              <h3 className="text-2xl font-bold mb-4">🔗 Cross-Chain Deployment</h3>
+              
+              <p className="mb-4">
+                $CHAR is deployed on <strong>9 Ethereum-compatible chains</strong> with the same contract address:
+              </p>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Base</div>
+                  <div className="text-sm text-base-content/60">Aerodrome ⭐</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Ethereum</div>
+                  <div className="text-sm text-base-content/60">Uniswap</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Arbitrum</div>
+                  <div className="text-sm text-base-content/60">Uniswap</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Polygon</div>
+                  <div className="text-sm text-base-content/60">QuickSwap</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Avalanche</div>
+                  <div className="text-sm text-base-content/60">LFGJ</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">BNB Chain</div>
+                  <div className="text-sm text-base-content/60">PancakeSwap</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Mantle</div>
+                  <div className="text-sm text-base-content/60">Fusion X</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Linea</div>
+                  <div className="text-sm text-base-content/60">Linea DEX</div>
+                </div>
+                <div className="bg-base-100 p-3 rounded-lg">
+                  <div className="font-bold">Blast</div>
+                  <div className="text-sm text-base-content/60">Blast DEX</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Token Distribution Table */}
+            <h3 className="text-2xl font-bold mb-4">📊 Token Distribution</h3>
             <div className="rounded-lg p-4">
               <div className="overflow-x-auto">
                 <table className="table w-full border-collapse text-sm">
@@ -129,57 +227,156 @@ export default function WhitepaperPage() {
                     <div><span className="font-semibold">Team & Dev:</span> IP and Project Expansion</div>
                   </div>
                 </div>
-                {/* Note */}
-                <div className="mt-6 text-sm text-base-content/70">
-                  <p>
-                    Note: After launch, 1B tokens from liquidity will be purchased and locked for Pump.fun to support future educational initiatives and community engagement.
-                  </p>
+              </div>
+            </div>
+
+            {/* Detailed Allocation Explanations */}
+            <div className="mt-8 space-y-4">
+              <div className="bg-accent/5 p-6 rounded-xl border border-accent/20">
+                <h4 className="text-xl font-bold mb-3">🌊 50% Liquidity (210.345B $CHAR)</h4>
+                <ul className="list-disc list-inside space-y-2 text-base-content/80">
+                  <li>Distributed across 9 major blockchain networks</li>
+                  <li>Locked liquidity on all DEXs for security and stability</li>
+                  <li>Primary pool on Base via Aerodrome for optimal trading</li>
+                  <li>Ensures deep liquidity and minimal slippage for all trades</li>
+                </ul>
+              </div>
+
+              <div className="bg-primary/5 p-6 rounded-xl border border-primary/20">
+                <h4 className="text-xl font-bold mb-3">🎁 35% Community (147.241B $CHAR)</h4>
+                <ul className="list-disc list-inside space-y-2 text-base-content/80">
+                  <li>Fair airdrop to early supporters and community members</li>
+                  <li>Staking rewards for long-term holders</li>
+                  <li>Community governance participation incentives</li>
+                  <li>Special rewards for NFT holders and ecosystem participants</li>
+                </ul>
+              </div>
+
+              <div className="bg-secondary/5 p-6 rounded-xl border border-secondary/20">
+                <h4 className="text-xl font-bold mb-3">🛠️ 15% Team & Development (63.103B $CHAR)</h4>
+                <ul className="list-disc list-inside space-y-2 text-base-content/80">
+                  <li>Ongoing development and platform improvements</li>
+                  <li>Marketing and strategic partnerships</li>
+                  <li>IP development and content creation</li>
+                  <li>Team compensation with vesting schedule</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* $BULL Educational Token */}
+            <div id="bull-token" className="mt-12 bg-warning/5 p-6 rounded-xl border border-warning/30">
+              <h3 className="text-2xl font-bold mb-4">🎓 $BULL: The Educational Token</h3>
+              
+              <div className="mb-4">
+                <div className="badge badge-warning mb-2">Pump.fun Launch</div>
+                <p className="text-base-content/80">
+                  <strong>$BULL</strong> is a 1 billion token educational experiment on Pump.fun, designed to demonstrate 
+                  community-driven token mechanics and bridge to the main $CHAR ecosystem.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div className="bg-base-100 p-4 rounded-lg">
+                  <div className="text-sm text-base-content/60">Supply</div>
+                  <div className="text-xl font-bold">1,000,000,000</div>
+                  <div className="text-sm text-base-content/60">(1 Billion)</div>
                 </div>
+                
+                <div className="bg-base-100 p-4 rounded-lg">
+                  <div className="text-sm text-base-content/60">Platform</div>
+                  <div className="text-xl font-bold">Pump.fun</div>
+                  <div className="text-sm text-base-content/60">(Solana)</div>
+                </div>
+              </div>
+
+              <div className="bg-base-200 p-4 rounded-lg">
+                <h4 className="font-bold mb-2">🎯 $BULL Benefits:</h4>
+                <ul className="list-disc list-inside space-y-1 text-sm text-base-content/80">
+                  <li>Community-driven liquidity growth experiment</li>
+                  <li>Early access to Charlie Bull NFT collection on graduation</li>
+                  <li>Educational content on tokenomics and DeFi mechanics</li>
+                  <li>Integration phases with main $CHAR ecosystem</li>
+                </ul>
+              </div>
+
+              <div className="mt-4 text-sm text-base-content/70 italic">
+                <strong>Note:</strong> $BULL serves as an educational tool and community engagement mechanism. 
+                Upon reaching graduation milestones on Pump.fun, the 1 billion $CHAR tokens that were locked from the liquidity allocation will be permanently burned to maintain the normalized total supply. 
+                $BULL holders will gain early access to the Charlie Bull NFT collection and other exclusive community benefits within the $CHAR ecosystem.
               </div>
             </div>
           </section>
           
           {/* Roadmap */}
           <section id="roadmap" className="mb-12">
-            <h2 className="text-3xl font-bold mb-4">4. Roadmap</h2>
+            <h2 className="text-3xl font-bold mb-6">🗺️ 4. Roadmap</h2>
+            
+            <p className="text-lg mb-8 text-base-content/80">
+              Our strategic roadmap outlines key milestones from AI integration to NFT launches and beyond.
+            </p>
+
             <div className="space-y-6">
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Start of Q4 2025 - AI Integration</h3>
+                  <h3 className="font-semibold text-lg">Q4 2025 - AI Integration ✅</h3>
                   <p className="text-base-content/70">Launch an interactive Charlie&apos;s AI character on Telegram and BlueSky, operational before token generation event</p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+              
+              <div className="flex items-start gap-4 bg-secondary/5 p-4 rounded-lg border-l-4 border-secondary">
+                <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q4 2025 - Token Generation Event</h3>
-                  <p className="text-base-content/70">Launch $CHAR token with initial liquidity on Base L2</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q4 2025 - Cross-Chain Expansion</h3>
-                  <p className="text-base-content/70">Bridge and Provide Liquidity on Arbitrum, Ethereum, 
-                  Avalanche and other supported networks on Axelar.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q4 2025 - $BULL Educational Token</h3>
+                  <h3 className="font-semibold text-lg">Q1 2026 - AI Performance Analysis</h3>
                   <p className="text-base-content/70">
-                    Launch 1B $BULL tokens on Pump.fun for educational streams. Upon graduation, $BULL will be treated as exclusive tokens that will grant holders access to early opportunities like minting our upcoming NFT collection, Charlie&apos;s Angels.
+                    Comprehensive analysis of AI integration impact on community growth, social media engagement metrics, and user interaction patterns. 
+                    Data-driven optimization of AI capabilities based on community feedback and platform analytics.
                   </p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
+              
+              <div className="flex items-start gap-4 bg-accent/5 p-4 rounded-lg border-l-4 border-accent">
+                <div className="w-4 h-4 bg-accent rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q2 2026 - Token Generation Event (TGE)</h3>
+                  <p className="text-base-content/70">
+                    Launch $CHAR token with 420.69B supply across 9 chains. Initial liquidity deployment on Base via Aerodrome, 
+                    followed by Ethereum, Arbitrum, Polygon, Avalanche, BSC, Mantle, Linea, and Blast.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">End of Q4 2025 to Q1 2026 - NFT launch and IP Developments</h3>
-                  <p className="text-base-content/70">Launch Charlie&apos;s Angels NFT collection on Solana, and 
-                  develop Charlie Bull&apos;s IP.</p>
+                  <h3 className="font-semibold text-lg">Q3 2026 - $BULL Educational Token & Token Burn</h3>
+                  <p className="text-base-content/70">
+                    Launch 1B $BULL tokens on Pump.fun for educational streams and community engagement. 
+                    Upon $BULL graduation, 1 billion $CHAR tokens from locked liquidity will be permanently burned to maintain normalized supply. 
+                    $BULL holders gain exclusive access to early opportunities like minting our upcoming NFT collection, Charlie&apos;s Angels.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 bg-secondary/5 p-4 rounded-lg border-l-4 border-secondary">
+                <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q4 2026 - NFT Launch & IP Development</h3>
+                  <p className="text-base-content/70">
+                    Launch Charlie&apos;s Angels NFT collection on Solana with exclusive benefits for $BULL graduates. 
+                    Expand Charlie Bull IP through partnerships, merchandise, and multimedia content.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 bg-accent/5 p-4 rounded-lg border-l-4 border-accent">
+                <div className="w-4 h-4 bg-accent rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">2027 & Beyond - Ecosystem Expansion</h3>
+                  <p className="text-base-content/70">
+                    Continuous development of DeFi utilities, governance implementation, strategic partnerships, 
+                    and expansion of the Charlie Bull universe across Web3 platforms.
+                  </p>
                 </div>
               </div>
             </div>
