@@ -57,7 +57,7 @@ Reach out to @CharlieBullArt on X or @NBigOnIsig on Instagram.
 
 ## AI Server Proxy
 
-The frontend calls internal API routes which proxy to the external Charlie AI server.
+The frontend calls internal API routes which proxy to the external Charlie AI server (AWS EC2, port 80).
 
 - Configure the backend URL via `.env.local` (not checked into git):
 
@@ -65,11 +65,45 @@ The frontend calls internal API routes which proxy to the external Charlie AI se
 AI_SERVER_URL=<YOUR_AI_SERVER_URL>
 ```
 
-- Routes (App Router):
-  - `GET /api/healthz` → proxies to `${AI_SERVER_URL}/healthz`
-  - `POST /api/chat` → proxies to `${AI_SERVER_URL}/v1/chat`
+- Admin endpoints require: `Authorization: Bearer <ADMIN_API_KEY>`
+
+### Proxied Routes (App Router)
+
+| Method | Frontend Route | Upstream Path | Auth | Description |
+|--------|---------------|---------------|------|-------------|
+| GET | `/api/healthz` | `/healthz` | — | Liveness probe. Returns `{ "status": "ok" }` |
+| POST | `/api/chat` | `/v1/chat` | — | Main chat. Body: `{ sessionId, message, history }` |
+
+### Direct Backend Routes (server-side / admin only)
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| GET | `/api/social/status` | — | Social automation status + daily quota |
+| GET | `/api/social/quota` | — | Per-platform quota breakdown |
+| GET | `/api/social/interactions/pending` | — | Pending Bluesky reply queue |
+| GET | `/api/social/x/tier` | — | X API tier detection |
+| POST | `/api/social/check-interactions` | Bearer | Manually trigger Bluesky interaction fetch |
+| POST | `/api/social/test/bluesky` | Bearer | Test Bluesky post |
+| POST | `/api/social/test/x` | Bearer | Test X post |
+| POST | `/api/social/reply/x` | Bearer | Legacy — manual X reply by tweet ID |
 
 Notes:
 - We preserve upstream status codes and return `application/json`.
 - Timeouts: 10s for health, 15s for chat.
 - Do not prefix with `NEXT_PUBLIC_`; the URL stays server-side only.
+- X/Twitter auto-replies are currently disabled (requires X API Basic tier). Reply code is kept as legacy and will be activated in a future upgrade.
+
+## Social Links
+
+| Platform | URL |
+|----------|-----|
+| Website | https://charliebull.art |
+| Docs | https://charliebull.art/docs |
+| Linktree | https://linktr.ee/charliebullart |
+| X / Twitter | https://x.com/charliebullart |
+| Bluesky | https://bsky.app/profile/charliebull.art |
+| Telegram | https://t.me/+VUOILe0sPis3MmYx |
+| TikTok | https://tiktok.com/@charliebullart |
+| LinkedIn | https://www.linkedin.com/company/charlie-bull-inc/ |
+| Medium | https://medium.com/@charliebullart |
+| GitHub | https://github.com/vick2592/Official-Charlie-Bull |

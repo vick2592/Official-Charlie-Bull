@@ -389,10 +389,16 @@ export function ChatWidget({}: ChatWidgetProps) {
     if (!legacy) setTyping(true);
 
     try {
+      // Build history from current messages (last 10, excluding any system/error entries)
+      const history = messages
+        .filter(m => m.sender === 'user' || m.sender === 'charlie')
+        .slice(-10)
+        .map(m => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.content }));
+
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: trimmed, sessionId: sessionIdRef.current })
+        body: JSON.stringify({ message: trimmed, sessionId: sessionIdRef.current, history })
       });
       const data = await res.json();
       const charMsg: ChatMessage = { id: 'c_'+Date.now(), content: withDog(data.message || 'Woof! Something went odd.'), sender: 'charlie', timestamp: Date.now() };

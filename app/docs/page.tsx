@@ -20,22 +20,38 @@ export default function WhitepaperPage() {
           </p>
           <div className="mt-6 flex justify-center gap-4 items-center">
             <span className="badge badge-primary badge-lg">Version 1.0.3</span>
-            <span className="badge badge-secondary badge-lg">Dec 15, 2025</span>
+            <span className="badge badge-secondary badge-lg">March 1, 2026</span>
           </div>
         </header>
         
         <div className="bg-base-200 rounded-lg shadow-lg p-8">
           {/* Table of Contents */}
-          <nav className="mb-8 text-center">
-            <h2 className="text-2xl font-semibold mb-4">Table of Contents</h2>
-            <ul className="space-y-2">
-              <li><a href="#abstract" className="link link-info no-underline">Abstract</a></li>
-              <li><a href="#introduction" className="link link-info no-underline">1. Introduction</a></li>
-              <li><a href="#technology" className="link link-info no-underline">2. Technology Stack</a></li>
-              <li><a href="#tokenomics" className="link link-info no-underline">3. Tokenomics</a></li>
-              <li><a href="#roadmap" className="link link-info no-underline">4. Roadmap</a></li>
-              <li><a href="#team" className="link link-info no-underline">5. Team</a></li>
-            </ul>
+          <nav className="mb-10">
+            <details className="group">
+              <summary className="flex items-center justify-between cursor-pointer select-none list-none bg-base-100 hover:bg-primary/10 transition-colors rounded-xl px-5 py-4 font-semibold text-lg border border-base-300">
+                <span>📋 Table of Contents</span>
+                <svg className="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <ul className="mt-2 rounded-xl border border-base-300 bg-base-100 overflow-hidden divide-y divide-base-200">
+                {[
+                  ["#abstract", "Abstract"],
+                  ["#introduction", "1. Introduction"],
+                  ["#technology", "2. Technology Stack"],
+                  ["#charlie-ai", "3. Charlie AI Agent"],
+                  ["#tokenomics", "4. Tokenomics"],
+                  ["#roadmap", "5. Roadmap"],
+                  ["#team", "6. Team"],
+                ].map(([href, label]) => (
+                  <li key={href}>
+                    <a href={href} className="block px-5 py-3 text-base-content hover:bg-primary/10 hover:text-primary transition-colors">
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
           </nav>
           
           {/* Abstract */}
@@ -86,10 +102,79 @@ export default function WhitepaperPage() {
               </div>
             </div>
           </section>
+
+          {/* Charlie AI Agent */}
+          <section id="charlie-ai" className="mb-12">
+            <h2 className="text-3xl font-bold mb-4">3. Charlie AI Agent</h2>
+
+            <p className="mb-6">
+              Charlie is an AI-powered social agent that posts, engages, and educates the community across multiple platforms. 
+              He runs autonomously on a backend server (AWS EC2), posting original content twice daily and responding to community interactions in real time.
+            </p>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-base-100 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold mb-3">Website Chat</h3>
+                <p>Chat with Charlie directly on <a href="https://charliebull.art" className="link link-info">charliebull.art</a>. Ask about tokenomics, bridges, DeFi strategies, or anything $CHAR-related.</p>
+              </div>
+              <div className="bg-base-100 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold mb-3">Telegram Bot</h3>
+                <p>Interact with <strong>@Charlie_Bull_bot</strong> on Telegram. Use the <code>/woof</code> command to begin interacting with Charlie.</p>
+              </div>
+              <div className="bg-base-100 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold mb-3">Bluesky</h3>
+                <p>Follow Charlie at <a href="https://bsky.app/profile/charliebull.art" className="link link-info" target="_blank" rel="noopener noreferrer">@charliebull.art</a> on Bluesky. Charlie posts 2x daily and <strong>automatically replies</strong> to mentions and comments.</p>
+              </div>
+              <div className="bg-base-100 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold mb-3">X / Twitter</h3>
+                <p>Follow Charlie at <a href="https://x.com/charliebullart" className="link link-info" target="_blank" rel="noopener noreferrer">@CharlieBullArt</a>. Charlie posts 2x daily. 
+                Auto-replies to mentions are not yet active — they require the X API Basic tier and will be enabled in a future upgrade.</p>
+              </div>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-xl border border-primary/20">
+              <h3 className="text-xl font-semibold mb-4">How Charlie Posts</h3>
+              <p className="mb-4 text-base-content/80">
+                Charlie&apos;s posts rotate across <strong>14 topic categories</strong> and <strong>7 post structure types</strong>, 
+                with a 14-post memory to prevent repetition. This ensures every post feels fresh and covers the full ecosystem.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-bold mb-2">📚 Topics (14 categories)</h4>
+                  <ul className="text-sm text-base-content/80 space-y-1 list-disc list-inside">
+                    <li>Chain spotlights (Base, Arbitrum, Ethereum…)</li>
+                    <li>Tokenomics facts &amp; $CHAR TGE roadmap</li>
+                    <li>$BULL Pump.fun launch &amp; graduation mechanics</li>
+                    <li>1B $CHAR burn event</li>
+                    <li>NFT collection on Solana</li>
+                    <li>Bridge tech (Axelar Network / Squid Router)</li>
+                    <li>Same contract address across 9 chains</li>
+                    <li>Base L2 benefits, community airdrop (35%)</li>
+                    <li>DeFi education, market perspectives, humor</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-bold mb-2">🗂️ Post Structures (7 types)</h4>
+                  <ul className="text-sm text-base-content/80 space-y-1 list-disc list-inside">
+                    <li>Educational fact</li>
+                    <li>Opinion</li>
+                    <li>Story</li>
+                    <li>Announcement</li>
+                    <li>Fun / humor</li>
+                    <li>Question to community</li>
+                    <li>Comparison</li>
+                  </ul>
+                  <div className="mt-4 text-sm text-base-content/70">
+                    <strong>Schedule:</strong> 8:00 AM daily + alternating 5:00 PM / 9:00 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
           
           {/* Tokenomics */}
           <section id="tokenomics" className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">3. Tokenomics</h2>
+            <h2 className="text-3xl font-bold mb-6">4. Tokenomics</h2>
             
             <p className="text-lg mb-8">
               Charlie Bull&apos;s tokenomics are designed for sustainable growth, deep liquidity, and genuine community empowerment.
@@ -295,6 +380,7 @@ export default function WhitepaperPage() {
                   <li>Community-driven liquidity growth experiment</li>
                   <li>Early access to Charlie Bull NFT collection on graduation</li>
                   <li>Educational content on tokenomics and DeFi mechanics</li>
+                  <li>CHAR/BULL swap pair launched on Raydium post-graduation</li>
                   <li>Integration phases with main $CHAR ecosystem</li>
                 </ul>
               </div>
@@ -302,14 +388,14 @@ export default function WhitepaperPage() {
               <div className="mt-4 text-sm text-base-content/70 italic">
                 <strong>Note:</strong> $BULL serves as an educational tool and community engagement mechanism. 
                 Upon reaching graduation milestones on Pump.fun, the 1 billion $CHAR tokens that were locked from the liquidity allocation will be permanently burned to maintain the normalized total supply. 
-                $BULL holders will gain early access to the Charlie Bull NFT collection and other exclusive community benefits within the $CHAR ecosystem.
+                A CHAR/BULL swap pair will be launched on Raydium, and $BULL holders will gain early access to the Charlie Bull NFT collection and other exclusive community benefits within the $CHAR ecosystem.
               </div>
             </div>
           </section>
           
           {/* Roadmap */}
           <section id="roadmap" className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">🗺️ 4. Roadmap</h2>
+            <h2 className="text-3xl font-bold mb-6">🗺️ 5. Roadmap</h2>
             
             <p className="text-lg mb-8 text-base-content/80">
               Our strategic roadmap outlines key milestones from AI integration to NFT launches and beyond.
@@ -319,18 +405,18 @@ export default function WhitepaperPage() {
               <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q4 2025 - AI Integration ✅</h3>
-                  <p className="text-base-content/70">Launch an interactive Charlie&apos;s AI character on Telegram and BlueSky, operational before token generation event</p>
+                  <h3 className="font-semibold text-lg">Q4 2025 — AI Integration ✅</h3>
+                  <p className="text-base-content/70">Charlie AI launched across Telegram, Bluesky, and X/Twitter. Website chat live. Automated social posting goes live with real-time Bluesky reply support.</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-4 bg-secondary/5 p-4 rounded-lg border-l-4 border-secondary">
                 <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q1 2026 - AI Performance Analysis</h3>
+                  <h3 className="font-semibold text-lg">Q1 2026 — AI Growth &amp; Analysis 🔄</h3>
                   <p className="text-base-content/70">
-                    Comprehensive analysis of AI integration impact on community growth, social media engagement metrics, and user interaction patterns. 
-                    Data-driven optimization of AI capabilities based on community feedback and platform analytics.
+                    Server infrastructure upgrades, topic variety improvements, and AI fine-tuning based on real community engagement data. 
+                    X/Twitter free tier stabilization. 14-topic rotation system and 7 post-structure types deployed. Ongoing analysis of social growth metrics across all platforms.
                   </p>
                 </div>
               </div>
@@ -338,10 +424,19 @@ export default function WhitepaperPage() {
               <div className="flex items-start gap-4 bg-accent/5 p-4 rounded-lg border-l-4 border-accent">
                 <div className="w-4 h-4 bg-accent rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q2 2026 - Token Generation Event (TGE)</h3>
+                  <h3 className="font-semibold text-lg">Q2 2026 — Receive approval from Coingecko and Etherscan ⏳</h3>
                   <p className="text-base-content/70">
-                    Launch $CHAR token with 420.69B supply across 9 chains. Initial liquidity deployment on Base via Aerodrome, 
-                    followed by Ethereum, Arbitrum, Polygon, Avalanche, BSC, Mantle, Linea, and Blast.
+                    Submit token Update forms on Coingecko and Etherscan prior to $CHAR TGE on Base via Aerodrome.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q3 2026 — $CHAR Token TGE on Aerodrome ⏳</h3>
+                  <p className="text-base-content/70">
+                    Launch the initial 50% Liquidity pool on Aerodrome to enable trading and price discovery. Begin cross-chain bridging to other networks via Axelar and Squid Router, starting with Ethereum and Arbitrum.
                   </p>
                 </div>
               </div>
@@ -349,21 +444,42 @@ export default function WhitepaperPage() {
               <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
                 <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q3 2026 - $BULL Educational Token & Token Burn</h3>
+                  <h3 className="font-semibold text-lg">Q3-Q4 2026 — Cross-Chain Expansion ⏳</h3>
                   <p className="text-base-content/70">
-                    Launch 1B $BULL tokens on Pump.fun for educational streams and community engagement. 
-                    Upon $BULL graduation, 1 billion $CHAR tokens from locked liquidity will be permanently burned to maintain normalized supply. 
-                    $BULL holders gain exclusive access to early opportunities like minting our upcoming NFT collection, Charlie&apos;s Angels.
+                    Bridge and provide liquidity on remaining chains: Polygon (QuickSwap), BSC (PancakeSwap), Mantle (Fusion X), Linea, and Blast. 
+                    Full 9-chain $CHAR deployment complete via Squid Router.
                   </p>
                 </div>
               </div>
-              
+
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q4 2026 — $BULL Launch &amp; Token Burn ⏳</h3>
+                  <p className="text-base-content/70">
+                    Join Charlie Bull to trade 1B $BULL tokens on (Solana) and watch weekly podcasts from the Charlie Bull team on Pump.fun. Upon graduation: 1B $CHAR permanently burned from locked liquidity on Ethereum. 
+                    $BULL holders gain exclusive early access to mint Charlie&apos;s Angels NFT collection.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q1 2027 — $CHAR to $BULL SOL Bridge ⏳</h3>
+                  <p className="text-base-content/70">
+                    Bridge $CHAR to Solana and trade it for $BULL token and vice versa with the new  
+                    CHAR/BULL swap pair launched on Raydium.
+                  </p>
+                </div>
+              </div>
+
               <div className="flex items-start gap-4 bg-secondary/5 p-4 rounded-lg border-l-4 border-secondary">
                 <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q4 2026 - NFT Launch & IP Development</h3>
+                  <h3 className="font-semibold text-lg">Q2 2027 — NFT Launch &amp; IP Development ⏳</h3>
                   <p className="text-base-content/70">
-                    Launch Charlie&apos;s Angels NFT collection on Solana with exclusive benefits for $BULL graduates. 
+                    Charlie&apos;s Angels NFT collection launches on Solana with exclusive benefits for $BULL graduates and token holders. 
                     Expand Charlie Bull IP through partnerships, merchandise, and multimedia content.
                   </p>
                 </div>
@@ -372,7 +488,7 @@ export default function WhitepaperPage() {
               <div className="flex items-start gap-4 bg-accent/5 p-4 rounded-lg border-l-4 border-accent">
                 <div className="w-4 h-4 bg-accent rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">2027 & Beyond - Ecosystem Expansion</h3>
+                  <h3 className="font-semibold text-lg">Q3 2027 &amp; Beyond — Ecosystem Expansion ⏳</h3>
                   <p className="text-base-content/70">
                     Continuous development of DeFi utilities, governance implementation, strategic partnerships, 
                     and expansion of the Charlie Bull universe across Web3 platforms.
@@ -384,7 +500,7 @@ export default function WhitepaperPage() {
           
           {/* Team */}
           <section id="team" className="mb-12">
-            <h2 className="text-3xl font-bold mb-4">5. Team</h2>
+            <h2 className="text-3xl font-bold mb-4">6. Team</h2>
             <div className="space-y-4">
               <div className="bg-base-100 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold">Founder</h3>
@@ -411,7 +527,7 @@ export default function WhitepaperPage() {
             </p>
                   <div className="mt-4">
             <p className="text-sm text-base-content/60">
-              © 2025 Charlie Bull.
+              © {new Date().getFullYear()} Charlie Bull.
             </p>
             </div>
             <div className="mt-4">
