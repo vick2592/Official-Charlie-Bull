@@ -68,7 +68,7 @@ official-charlie-bull/
 └── PROJECT_CONTEXT.md          # ← you are here
 ```
 
-**Backend repo:** `charlie-ai-server` — Node.js AI server on AWS EC2. Has its own PROJECT_CONTEXT.md.
+**Backend repo:** `charlie-ai-server` — Node.js AI server on a Hetzner VPS. Has its own PROJECT_CONTEXT.md.
 
 ---
 
@@ -102,9 +102,10 @@ The frontend requires one environment variable:
 
 | Variable | Description |
 |---|---|
-| `AI_SERVER_URL` | Base URL of the charlie-ai-server backend (no trailing slash) |
+| `AI_SERVER_URL` | Base URL of the charlie-ai-server backend on Hetzner (no trailing slash) |
 
-Set this in Vercel project settings under Environment Variables. The value points to the backend server running in `charlie-ai-server`.
+Set this in Vercel project settings under Environment Variables. The value points to the backend server running in `charlie-ai-server` and no longer relies on the old AWS-hosted endpoint.
+The backend should allow the live frontend origin `https://charliebull.art` in `ALLOWED_ORIGINS`.
 
 ---
 
@@ -200,7 +201,7 @@ Charlie is an autonomous AI agent running in the `charlie-ai-server` backend. He
 - **Schedule:** 8:00 AM daily + alternating 5:00 PM / 9:00 PM
 
 **AI model:** Google Gemini (configured in `charlie-ai-server`)  
-**Infrastructure:** AWS EC2 (configured in `charlie-ai-server`)  
+**Infrastructure:** Hetzner VPS (configured in `charlie-ai-server`)  
 **Signature:** Every Charlie response ends with `- Charlie AI 🐾🐶`
 
 ---
@@ -287,7 +288,7 @@ The `charlie-ai-server` repository contains:
 - X/Twitter scheduled post automation
 - Telegram bot (session management, /woof command)
 - The full knowledge base Charlie is trained on
-- AWS EC2 deployment configuration
+- Hetzner VPS deployment configuration
 
 See `PROJECT_CONTEXT.md` in `charlie-ai-server` for full backend documentation.
 

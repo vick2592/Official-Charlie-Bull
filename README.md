@@ -57,13 +57,15 @@ Reach out to @CharlieBullArt on X or @NBigOnIsig on Instagram.
 
 ## AI Server Proxy
 
-The frontend calls internal API routes which proxy to the external Charlie AI server (AWS EC2, port 80).
+The frontend calls internal API routes which proxy to the external Charlie AI server on Hetzner. This cutover removes the old AWS dependency and keeps the backend surface tighter and more private.
 
 - Configure the backend URL via `.env.local` (not checked into git):
 
 ```
 AI_SERVER_URL=<YOUR_AI_SERVER_URL>
 ```
+
+For the live deployment, the backend should allow the frontend origin `https://charliebull.art` in `ALLOWED_ORIGINS`.
 
 - Admin endpoints require: `Authorization: Bearer <ADMIN_API_KEY>`
 
@@ -91,6 +93,7 @@ Notes:
 - We preserve upstream status codes and return `application/json`.
 - Timeouts: 10s for health, 15s for chat.
 - Do not prefix with `NEXT_PUBLIC_`; the URL stays server-side only.
+- The browser chat flow still goes through `/api/chat` and `/api/healthz`; the frontend does not call the backend host directly.
 - X/Twitter auto-replies are currently disabled (requires X API Basic tier). Reply code is kept as legacy and will be activated in a future upgrade.
 
 ## Social Links

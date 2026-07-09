@@ -109,7 +109,7 @@ export default function WhitepaperPage() {
 
             <p className="mb-6">
               Charlie is an AI-powered social agent that posts, engages, and educates the community across multiple platforms. 
-              He runs autonomously on a backend server (AWS EC2), posting original content twice daily and responding to community interactions in real time.
+              He runs autonomously on a backend server hosted on Hetzner, which keeps the stack more private and removes the old AWS dependency, while still posting original content twice daily and responding to community interactions in real time.
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
