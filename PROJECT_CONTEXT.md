@@ -2,8 +2,8 @@
 
 > **Purpose of this file:** This document exists so that any AI assistant (Claude, Gemini, GPT, or future models) can be dropped into this codebase cold and immediately understand the full project, architecture, current state, and what to do next. Read this file first before touching anything.
 
-> **Last updated:** March 29, 2026  
-> **Woof Paper version:** 1.0.3  
+> **Last updated:** April 2, 2026  
+> **Woof Paper version:** 1.0.4  
 > **Related repo:** `charlie-ai-server` (backend — has its own PROJECT_CONTEXT.md)
 
 ---
@@ -35,7 +35,7 @@ official-charlie-bull/
 │   ├── chat/
 │   │   └── page.tsx            # Dedicated chat page
 │   ├── docs/
-│   │   └── page.tsx            # Woof Paper v1.0.3 (full tokenomics docs)
+│   │   └── page.tsx            # Woof Paper v1.0.4 (full tokenomics docs)
 │   └── api/
 │       ├── chat/
 │       │   └── route.ts        # Proxy: POST /api/chat → AI_SERVER_URL/v1/chat
@@ -213,11 +213,11 @@ Charlie is an autonomous AI agent running in the `charlie-ai-server` backend. He
 | Q4 2025 | Charlie AI launched across Telegram, Bluesky, X/Twitter. Website chat live. Bluesky auto-replies active. | ✅ Complete |
 | Q1 2026 | AI growth & analysis. Server infrastructure upgrades. Topic variety improvements. 14-topic/7-structure system deployed. X/Twitter free tier stabilization. | 🔄 Current |
 | Q2 2026 | Submit token update forms on CoinGecko and Etherscan prior to $CHAR TGE | ⏳ Upcoming |
-| Q3 2026 | $CHAR Token Generation Event (TGE) — launch initial 50% liquidity pool on Aerodrome (Base). Begin cross-chain bridging via Axelar + Squid Router. | ⏳ Upcoming |
-| Q3–Q4 2026 | Full 9-chain deployment: Polygon (QuickSwap), BSC (PancakeSwap), Mantle (Fusion X), Linea, Blast | ⏳ Upcoming |
-| Q4 2026 | $BULL launch on Pump.fun (Solana). Upon graduation: 1B $CHAR permanently burned. Weekly podcasts on Pump.fun. | ⏳ Upcoming |
-| Q1 2027 | Base ↔ Solana bridge. CHAR/BULL swap pair launches on Raydium. | ⏳ Upcoming |
-| Q2 2027 | Charlie's Angels NFT collection launches on Solana. IP partnerships, merchandise, multimedia. | ⏳ Upcoming |
+| Q4 2026 | $CHAR Token Generation Event (TGE) — launch initial 50% liquidity pool on Aerodrome (Base). Begin cross-chain bridging via Axelar + Squid Router. | ⏳ Upcoming |
+| Q4 2026–Q1 2027 | Full 9-chain deployment: Polygon (QuickSwap), BSC (PancakeSwap), Mantle (Fusion X), Linea, Blast | ⏳ Upcoming |
+| Q1 2027 | $BULL launch on Pump.fun (Solana). Upon graduation: 1B $CHAR permanently burned. Weekly podcasts on Pump.fun. | ⏳ Upcoming |
+| Q2 2027 | Base ↔ Solana bridge. CHAR/BULL swap pair launches on Raydium. | ⏳ Upcoming |
+| Q3 2027 | Charlie's Angels NFT collection launches on Solana. IP partnerships, merchandise, multimedia. | ⏳ Upcoming |
 | Q3 2027+ | DeFi utilities, governance implementation, strategic partnerships, Web3 expansion. | ⏳ Future |
 
 ---
