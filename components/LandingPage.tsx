@@ -99,7 +99,10 @@ export function LandingPage() {
         </div>
         
         <div className="flex flex-col items-center mt-4 mb-8 animate-bounce">
-          <p className="text-lg font-bold mb-2">Available on 9 chains and counting!</p>
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <span className="badge badge-primary badge-lg animate-pulse">🚀 TGE Q4 2026</span>
+            <p className="text-lg font-bold">9 chains ready</p>
+          </div>
           <a 
             href="#buy-it-now" 
             onClick={(e) => {
@@ -145,7 +148,7 @@ export function LandingPage() {
             }}
             className="btn btn-primary btn-md"
           >
-            Get $CHAR
+            Buy $CHAR
           </a>
           <div className="flex justify-center mt-6">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
