@@ -3,8 +3,8 @@ import CopyButton from "@/components/CopyButton";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Charlie Bull - Woof Paper v1.0.3 | Complete Tokenomics",
-  description: "Official Woof Paper for Charlie Bull ($CHAR): 420.69 billion supply across 9 Ethereum chains. Comprehensive tokenomics, utility, and cross-chain documentation.",
+  title: "Charlie Bull - Woof Paper v1.0.4 | Complete Tokenomics",
+  description: "Official Woof Paper for Charlie Bull ($CHAR): 420.69 billion supply across 9 Ethereum chains. Roadmap finalized — TGE Q4 2026, $BULL Q1 2027, NFT Q3 2027.",
 };
 
 export default function WhitepaperPage() {
@@ -19,11 +19,22 @@ export default function WhitepaperPage() {
             The First Cross-Chain AI Pup on Ethereum
           </p>
           <div className="mt-6 flex justify-center gap-4 items-center">
-            <span className="badge badge-primary badge-lg">Version 1.0.3</span>
-            <span className="badge badge-secondary badge-lg">March 1, 2026</span>
+            <span className="badge badge-primary badge-lg">Version 1.0.4</span>
+            <span className="badge badge-secondary badge-lg">Q3 2026</span>
           </div>
         </header>
         
+        {/* Changelog */}
+        <div className="mb-8 bg-base-200 rounded-lg p-4 border border-base-300">
+          <h2 className="font-semibold mb-2">📝 Changelog</h2>
+          <p className="text-sm text-base-content/70">
+            <strong>v1.0.4 — Q3 2026:</strong> Roadmap finalized. TGE confirmed Q4 2026. $BULL confirmed Q1 2027. NFT confirmed Q3 2027.
+          </p>
+          <p className="text-sm text-base-content/70 mt-1">
+            <strong>v1.0.3 — March 2026:</strong> Updated AI agent documentation, social platform status, and tokenomics details.
+          </p>
+        </div>
+
         <div className="bg-base-200 rounded-lg shadow-lg p-8">
           {/* Table of Contents */}
           <nav className="mb-10">
@@ -398,25 +409,119 @@ export default function WhitepaperPage() {
             <h2 className="text-3xl font-bold mb-6">🗺️ 5. Roadmap</h2>
             
             <p className="text-lg mb-8 text-base-content/80">
-              Our strategic roadmap outlines key milestones from AI integration to NFT launches and beyond.
+              Our strategic roadmap outlines key milestones from AI integration to ecosystem expansion. All AI growth milestones are now complete — the project is in the pre-TGE preparation phase.
             </p>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+            {/* Current position indicator */}
+            <div className="mb-8 bg-primary/10 p-4 rounded-xl border border-primary/30">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">📍</span>
                 <div>
-                  <h3 className="font-semibold text-lg">Q4 2025 — AI Integration ✅</h3>
-                  <p className="text-base-content/70">Charlie AI launched across Telegram, Bluesky, and X/Twitter. Website chat live. Automated social posting goes live with real-time Bluesky reply support.</p>
+                  <div className="font-bold text-primary">Current Position: Q3 2026</div>
+                  <div className="text-sm text-base-content/70">All AI growth milestones complete. Next major event: <strong>$CHAR TGE in Q4 2026</strong>.</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {/* ✅ Completed Milestones */}
+              <div className="flex items-start gap-4 bg-success/5 p-4 rounded-lg border-l-4 border-success opacity-80">
+                <div className="w-4 h-4 bg-success rounded-full mt-2 flex-shrink-0 flex items-center justify-center text-xs">✓</div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q4 2025 — AI Integration</h3>
+                  <span className="badge badge-success badge-sm ml-2">Complete</span>
+                  <p className="text-base-content/70 mt-1">Charlie AI launched across Telegram, Bluesky, and X/Twitter. Website chat live. Automated social posting with real-time Bluesky reply support.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-success/5 p-4 rounded-lg border-l-4 border-success opacity-80">
+                <div className="w-4 h-4 bg-success rounded-full mt-2 flex-shrink-0 flex items-center justify-center text-xs">✓</div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q1 2026 — AI Growth &amp; Analysis</h3>
+                  <span className="badge badge-success badge-sm ml-2">Complete</span>
+                  <p className="text-base-content/70 mt-1">Server infrastructure upgrades, topic variety improvements, AI fine-tuning based on community engagement data. 14-topic rotation and 7 post-structure types deployed.</p>
                 </div>
               </div>
               
+              <div className="flex items-start gap-4 bg-success/5 p-4 rounded-lg border-l-4 border-success opacity-80">
+                <div className="w-4 h-4 bg-success rounded-full mt-2 flex-shrink-0 flex items-center justify-center text-xs">✓</div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q2 2026 — AI Growth Stage 2</h3>
+                  <span className="badge badge-success badge-sm ml-2">Complete</span>
+                  <p className="text-base-content/70 mt-1">Advanced analysis capabilities, multi-platform expansion, and deeper data integration for community insights.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-success/5 p-4 rounded-lg border-l-4 border-success opacity-80">
+                <div className="w-4 h-4 bg-success rounded-full mt-2 flex-shrink-0 flex items-center justify-center text-xs">✓</div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q3 2026 — VPS Integration &amp; Social Growth</h3>
+                  <span className="badge badge-success badge-sm ml-2">Complete</span>
+                  <p className="text-base-content/70 mt-1">Hetzner VPS deployment, 24/7 uptime, and continued social growth across all platforms.</p>
+                </div>
+              </div>
+
+              {/* ⏳ Upcoming Milestones */}
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q4 2026 — CoinGecko &amp; Etherscan Approval</h3>
+                  <span className="badge badge-warning badge-sm ml-2">Upcoming</span>
+                  <p className="text-base-content/70 mt-1">Submit token listings and receive approval from CoinGecko and Etherscan prior to TGE.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-primary/10 p-5 rounded-lg border-l-4 border-primary shadow-lg">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0 animate-pulse"></div>
+                <div>
+                  <h3 className="font-bold text-xl text-primary">Q4 2026 — $CHAR TGE on Base via Aerodrome</h3>
+                  <span className="badge badge-primary badge-sm ml-2">Next Milestone</span>
+                  <p className="text-base-content/70 mt-1">
+                    Token Generation Event — the big one. Launch the 50% liquidity pool on Aerodrome to enable trading and price discovery. This is the most anticipated milestone in the project&apos;s history.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q4 2026 – Q1 2027 — Cross-Chain Expansion</h3>
+                  <span className="badge badge-warning badge-sm ml-2">Upcoming</span>
+                  <p className="text-base-content/70 mt-1">
+                    Bridging and multi-chain presence. Bridge and provide liquidity on remaining chains: Polygon (QuickSwap), BSC (PancakeSwap), Mantle (Fusion X), Linea, and Blast. Full 9-chain deployment via Squid Router.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q1 2027 — $BULL Launch on Pump.fun + 1B $CHAR Burn</h3>
+                  <span className="badge badge-warning badge-sm ml-2">Upcoming</span>
+                  <p className="text-base-content/70 mt-1">
+                    $BULL launches on Pump.fun (Solana) — a 1B supply educational companion token. Upon graduation, 1B $CHAR permanently burned from locked liquidity. $BULL holders gain exclusive early access to Charlie&apos;s Angels NFT mint.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
+                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h3 className="font-semibold text-lg">Q2 2027 — Base ↔ Solana Bridge + Raydium CHAR/BULL Pair</h3>
+                  <span className="badge badge-warning badge-sm ml-2">Upcoming</span>
+                  <p className="text-base-content/70 mt-1">
+                    Bridge $CHAR to Solana and trade it against $BULL via the CHAR/BULL swap pair on Raydium. Full cross-ecosystem liquidity.
+                  </p>
+                </div>
+              </div>
+
               <div className="flex items-start gap-4 bg-secondary/5 p-4 rounded-lg border-l-4 border-secondary">
                 <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q1 2026 — AI Growth &amp; Analysis 🔄</h3>
-                  <p className="text-base-content/70">
-                    Server infrastructure upgrades, topic variety improvements, and AI fine-tuning based on real community engagement data. 
-                    X/Twitter free tier stabilization. 14-topic rotation system and 7 post-structure types deployed. Ongoing analysis of social growth metrics across all platforms.
+                  <h3 className="font-semibold text-lg">Q3 2027 — Charlie&apos;s Angels NFT Launch + IP Development</h3>
+                  <span className="badge badge-warning badge-sm ml-2">Upcoming</span>
+                  <p className="text-base-content/70 mt-1">
+                    Charlie&apos;s Angels NFT collection launches on Solana with exclusive benefits for $BULL graduates and token holders. Expand Charlie Bull IP through partnerships, merchandise, and multimedia content.
                   </p>
                 </div>
               </div>
@@ -424,74 +529,10 @@ export default function WhitepaperPage() {
               <div className="flex items-start gap-4 bg-accent/5 p-4 rounded-lg border-l-4 border-accent">
                 <div className="w-4 h-4 bg-accent rounded-full mt-2 flex-shrink-0"></div>
                 <div>
-                  <h3 className="font-semibold text-lg">Q2 2026 — Receive approval from Coingecko and Etherscan ⏳</h3>
-                  <p className="text-base-content/70">
-                    Submit token Update forms on Coingecko and Etherscan prior to $CHAR TGE on Base via Aerodrome.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q3 2026 — $CHAR Token TGE on Aerodrome ⏳</h3>
-                  <p className="text-base-content/70">
-                    Launch the initial 50% Liquidity pool on Aerodrome to enable trading and price discovery. Begin cross-chain bridging to other networks via Axelar and Squid Router, starting with Ethereum and Arbitrum.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q3-Q4 2026 — Cross-Chain Expansion ⏳</h3>
-                  <p className="text-base-content/70">
-                    Bridge and provide liquidity on remaining chains: Polygon (QuickSwap), BSC (PancakeSwap), Mantle (Fusion X), Linea, and Blast. 
-                    Full 9-chain $CHAR deployment complete via Squid Router.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q4 2026 — $BULL Launch &amp; Token Burn ⏳</h3>
-                  <p className="text-base-content/70">
-                    Join Charlie Bull to trade 1B $BULL tokens on (Solana) and watch weekly podcasts from the Charlie Bull team on Pump.fun. Upon graduation: 1B $CHAR permanently burned from locked liquidity on Ethereum. 
-                    $BULL holders gain exclusive early access to mint Charlie&apos;s Angels NFT collection.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q1 2027 — $CHAR to $BULL SOL Bridge ⏳</h3>
-                  <p className="text-base-content/70">
-                    Bridge $CHAR to Solana and trade it for $BULL token and vice versa with the new  
-                    CHAR/BULL swap pair launched on Raydium.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4 bg-secondary/5 p-4 rounded-lg border-l-4 border-secondary">
-                <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q2 2027 — NFT Launch &amp; IP Development ⏳</h3>
-                  <p className="text-base-content/70">
-                    Charlie&apos;s Angels NFT collection launches on Solana with exclusive benefits for $BULL graduates and token holders. 
-                    Expand Charlie Bull IP through partnerships, merchandise, and multimedia content.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4 bg-accent/5 p-4 rounded-lg border-l-4 border-accent">
-                <div className="w-4 h-4 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="font-semibold text-lg">Q3 2027 &amp; Beyond — Ecosystem Expansion ⏳</h3>
-                  <p className="text-base-content/70">
-                    Continuous development of DeFi utilities, governance implementation, strategic partnerships, 
-                    and expansion of the Charlie Bull universe across Web3 platforms.
+                  <h3 className="font-semibold text-lg">Q4 2027+ — Ecosystem Expansion</h3>
+                  <span className="badge badge-ghost badge-sm ml-2">Future</span>
+                  <p className="text-base-content/70 mt-1">
+                    Continuous development of DeFi utilities, governance implementation, strategic partnerships, and expansion of the Charlie Bull universe across Web3 platforms.
                   </p>
                 </div>
               </div>
