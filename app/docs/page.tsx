@@ -20,20 +20,9 @@ export default function WhitepaperPage() {
           </p>
           <div className="mt-6 flex justify-center gap-4 items-center">
             <span className="badge badge-primary badge-lg">Version 1.0.4</span>
-            <span className="badge badge-secondary badge-lg">Q3 2026</span>
+            <span className="badge badge-secondary badge-lg">Sep 2026</span>
           </div>
         </header>
-        
-        {/* Changelog */}
-        <div className="mb-8 bg-base-200 rounded-lg p-4 border border-base-300">
-          <h2 className="font-semibold mb-2">📝 Changelog</h2>
-          <p className="text-sm text-base-content/70">
-            <strong>v1.0.4 — Q3 2026:</strong> Roadmap finalized. TGE confirmed Q4 2026. $BULL confirmed Q1 2027. NFT confirmed Q3 2027.
-          </p>
-          <p className="text-sm text-base-content/70 mt-1">
-            <strong>v1.0.3 — March 2026:</strong> Updated AI agent documentation, social platform status, and tokenomics details.
-          </p>
-        </div>
 
         <div className="bg-base-200 rounded-lg shadow-lg p-8">
           {/* Table of Contents */}
@@ -53,7 +42,7 @@ export default function WhitepaperPage() {
                   ["#charlie-ai", "3. Charlie AI Agent"],
                   ["#tokenomics", "4. Tokenomics"],
                   ["#roadmap", "5. Roadmap"],
-                  ["#team", "6. Team"],
+                  ["#team", "6. Team & Official Support"],
                 ].map(([href, label]) => (
                   <li key={href}>
                     <a href={href} className="block px-5 py-3 text-base-content hover:bg-primary/10 hover:text-primary transition-colors">
@@ -135,11 +124,6 @@ export default function WhitepaperPage() {
               <div className="bg-base-100 p-6 rounded-lg">
                 <h3 className="text-xl font-semibold mb-3">Bluesky</h3>
                 <p>Follow Charlie at <a href="https://bsky.app/profile/charliebull.art" className="link link-info" target="_blank" rel="noopener noreferrer">@charliebull.art</a> on Bluesky. Charlie posts 2x daily and <strong>automatically replies</strong> to mentions and comments.</p>
-              </div>
-              <div className="bg-base-100 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold mb-3">X / Twitter</h3>
-                <p>Follow Charlie at <a href="https://x.com/charliebullart" className="link link-info" target="_blank" rel="noopener noreferrer">@CharlieBullArt</a>. Charlie posts 2x daily. 
-                Auto-replies to mentions are not yet active — they require the X API Basic tier and will be enabled in a future upgrade.</p>
               </div>
             </div>
 
@@ -412,17 +396,6 @@ export default function WhitepaperPage() {
               Our strategic roadmap outlines key milestones from AI integration to ecosystem expansion. All AI growth milestones are now complete — the project is in the pre-TGE preparation phase.
             </p>
 
-            {/* Current position indicator */}
-            <div className="mb-8 bg-primary/10 p-4 rounded-xl border border-primary/30">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">📍</span>
-                <div>
-                  <div className="font-bold text-primary">Current Position: Q3 2026</div>
-                  <div className="text-sm text-base-content/70">All AI growth milestones complete. Next major event: <strong>$CHAR TGE in Q4 2026</strong>.</div>
-                </div>
-              </div>
-            </div>
-
             <div className="space-y-4">
               {/* ✅ Completed Milestones */}
               <div className="flex items-start gap-4 bg-success/5 p-4 rounded-lg border-l-4 border-success opacity-80">
@@ -471,10 +444,10 @@ export default function WhitepaperPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 bg-primary/10 p-5 rounded-lg border-l-4 border-primary shadow-lg">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0 animate-pulse"></div>
+              <div className="flex items-start gap-4 bg-primary/10 p-5 rounded-lg border-l-4 border-secondary shadow-lg">
+                <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0 animate-pulse"></div>
                 <div>
-                  <h3 className="font-bold text-xl text-primary">Q4 2026 — $CHAR TGE on Base via Aerodrome</h3>
+                  <h3 className="font-bold text-lg">Q4 2026 — $CHAR TGE on Base via Aerodrome</h3>
                   <span className="badge badge-primary badge-sm ml-2">Next Milestone</span>
                   <p className="text-base-content/70 mt-1">
                     Token Generation Event — the big one. Launch the 50% liquidity pool on Aerodrome to enable trading and price discovery. This is the most anticipated milestone in the project&apos;s history.
@@ -493,8 +466,8 @@ export default function WhitepaperPage() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-primary">
-                <div className="w-4 h-4 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+              <div className="flex items-start gap-4 bg-primary/5 p-4 rounded-lg border-l-4 border-secondary">
+                <div className="w-4 h-4 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-lg">Q1 2027 — $BULL Launch on Pump.fun + 1B $CHAR Burn</h3>
                   <span className="badge badge-warning badge-sm ml-2">Upcoming</span>
@@ -541,22 +514,24 @@ export default function WhitepaperPage() {
           
           {/* Team */}
           <section id="team" className="mb-12">
-            <h2 className="text-3xl font-bold mb-4">6. Team</h2>
-            <div className="space-y-4">
+            <h2 className="text-3xl font-bold mb-4">6. Team &amp; Official Support</h2>
+            <p className="text-base-content/70 mb-6">
+              The Charlie Bull team consists of experienced blockchain developers, creators, and community leaders dedicated to building the most accessible cross-chain experience in crypto.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-base-100 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold">Founder</h3>
-                <p className="mt-2">
-                  <a href="https://www.linkedin.com/in/viktor-khachatryan-78a6a064/" target="_blank" rel="noopener noreferrer" className="link link-info">
-                    Viktor Khachatryan 
-                  </a>
-                   <span> — Full Stack Developer.</span> 
-                </p>
-                <p className="mt-3">
-                  The Charlie Bull team consists of experienced blockchain 
-                  developers, artists, and community builders dedicated to 
-                  creating the most accessible cross-chain experience in 
-                  cryptocurrency.
-                </p>
+                <h3 className="text-2xl font-bold mb-1">Viktor Khachatryan</h3>
+                <p className="text-sm text-base-content/70 mb-4">Full Stack Developer &amp; AI Architect</p>
+                <a href="https://www.linkedin.com/in/viktor-khachatryan" target="_blank" rel="noopener noreferrer" className="link link-info font-medium inline-flex items-center gap-1">
+                  Connect on LinkedIn →
+                </a>
+              </div>
+              <div className="bg-base-100 p-6 rounded-lg">
+                <h3 className="text-2xl font-bold mb-1">Official X / Twitter</h3>
+                <p className="text-sm text-base-content/70 mb-4">Dedicated human team support and official project announcements.</p>
+                <a href="https://x.com/charliebullart" target="_blank" rel="noopener noreferrer" className="link link-info font-medium inline-flex items-center gap-1">
+                  @CharlieBullArt on X →
+                </a>
               </div>
             </div>
           </section>
